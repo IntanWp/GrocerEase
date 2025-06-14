@@ -5,19 +5,10 @@ import productModel from "../models/productModel.js";
 const addProduct = async (req, res) => {
   //make a middleware with multer to upload images
   try {
-    const { name, description, price, category, stock, weight, advantages } =
-      req.body;
+    const { name, description, price, category, stock, weight, advantages } = req.body;
     const image = req.file;
 
     //image gabisa masuk DB, jadi diupload ke cloudinary trs dijadiin url
-    // let imageUrl = await Promise.all(
-    //   images.map(async (img) => {
-    //     let result = await cloudinary.uploader.upload(img.path, {
-    //       resource_type: "image",
-    //     });
-    //     return result.secure_url;
-    //   })
-    // );
 
     let result = await cloudinary.uploader.upload(image.path, {
       resource_type: "image",
