@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+html{
+    height: 100%;
+}
+
+body {
+    background-color: #FFFBE6;
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    position: absolute; /* Moves independently */
+    top: 5%; /* Adjust this */
+    left: 4%;
+    padding: 1%;
+}
+
+
+.container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 5%;
+}
+
+.tagline-container {
+    max-width: 50%;
+    color: #347928;
+    font-weight: 600;
+    font-size: 150%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Keeps it vertically aligned */
+    padding-top: 10vh; /* Adjusts the top space dynamically */
+}
+
+
+.desc {
+    font-weight: 600;
+    font-size: 60%;
+    margin-bottom: 2%;
+}
+
+.belanjaan-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Push the image to the right */
+    margin-top: 2vh;
+    margin-right: 1%;
+}
+
+.belanjaan-container img {
+    max-width: 100%; 
+    height: auto;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;  /* Ensures it doesn’t stretch too much */
+    margin: 18px auto;  /* Centers it properly */
+    padding: 0 20px;  /* Adds breathing space */
+    margin-left: -1%;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    width: 400%;
+    max-width: 400px;
+    background-color: #C0EBA6;
+    border-radius: 40px;
+    padding: 0px 18px;
+    margin-bottom: 10px;
+}
+
+.input-icon {
+    width: 24px; /* Adjust icon size */
+    height: 24px;
+    margin-right: 40px; /* Space between icon and text */
+}
+
+.input-container input {
+    flex: 1; /* Makes input field take available space */
+    border: none;
+    height: 32px;
+    padding: 5px 12px;
+    font-size: 60%;
+    outline: none;
+    padding-top: 4%;
+    background: none; /* Makes input blend into container */
+}
+
+input {
+    width: 400px; 
+    max-width: 400px;
+    padding: 12px;
+    margin-left: -11%;
+    margin-bottom: 10px; /* Space between username and password */
+    border: none;
+    border-radius: 25px; 
+    font-size: 16px;
+    outline: none;
+    background-color: #C0EBA6;
+    text-align: left; /* Center text inside input */
+}
+
+button[type="submit"][name="action"][value="login"] {
+    width: 190px;
+    padding: 10px;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    background-color: #347928;
+    color: white;
+    font-size: 65%;
+    cursor: pointer;
+    text-align: center;
+}
+
+button[type="submit"][name="action"][value="login"]:hover {
+    background-color: #2a5d1e;
+}
+
+button[type="submit"][name="action"][value="signup"] {
+    width: 190px;
+    padding: 10px;
+    font-weight: 600;
+    border: 2px solid #347928;
+    border-radius: 25px;
+    background-color: transparent;
+    color: #347928;
+    font-size: 65%;
+    cursor: pointer;
+    text-align: center;
+}
+
+button[type="submit"][name="action"][value="signup"]:hover {
+    background-color: #347928;
+    color: white;
+}
