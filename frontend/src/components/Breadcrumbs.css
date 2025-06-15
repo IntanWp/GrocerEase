@@ -1,0 +1,54 @@
+/* Background wrapper khusus */
+.breadcrumb-background {
+  background-image: url('../assets/backg.png'); /* jika menggunakan CSS biasa */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  padding: 10px 40px;
+  position: fixed;
+}
+
+/* Breadcrumb isi */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  margin-left: 200px;
+}
+
+.breadcrumb .current {
+  font-weight: bold;
+  font-size: 22px;
+  color: black; /* tambahkan ini agar tampil hitam */
+}
+
+.breadcrumb ol {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: black;
+}
+
+.breadcrumb li a {
+  color: #6D6D6D;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.breadcrumb li a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .current {
+  font-weight: bold;
+  font-size: 22px;
+}
