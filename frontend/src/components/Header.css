@@ -1,0 +1,61 @@
+/* src/components/Header.css */
+  /* At the very top of your global CSS file */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+  
+.header {
+    background-color: #A3DB7E;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 26px;
+    width: 100%;
+    position: sticky;
+    top: 0; /* Ensures it sticks to the top */
+    z-index: 1000; /* Optional: To ensure it stays above other elements */
+}
+  
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+  margin-left: 20px;
+}
+
+.brand {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.search-bar {
+  width: 950px; /* atau 300px sesuai selera */
+  margin: 0 24px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  margin-left: -50px;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 44px; /* kurangi jarak antar ikon */
+  margin-right: 40px; /* beri jarak dari sisi kanan */
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  right: 200px;
+}

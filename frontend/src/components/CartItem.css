@@ -1,0 +1,238 @@
+/* src/components/CartItem.css */
+
+.container {
+  width: 70%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+  padding-top: 70px;
+  padding-bottom: 160px;
+}
+
+.select-all {
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 16px;
+}
+
+
+.item-image {
+  width: 100px;
+  height: 120px;
+  object-fit: contain;
+  margin-right: 16px;
+}
+
+.item-details {
+  flex-grow: 1;
+}
+
+.item-price {
+  width: 150px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+  margin-left: 7px;
+}
+
+.cart-item input{
+  margin-bottom: 100px;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 82px;
+  margin-top: 10px;
+}
+
+.quantity-selector button {
+  padding: 4px 8px;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  margin-left: 16px;
+  cursor: pointer;
+  margin-bottom: 100px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+.checkout-button {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  position: sticky;
+}
+
+.select-all-section {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 50px;
+  width: 800px;
+  
+}
+
+.green-button {
+  background-color: #D1F2B2;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.select-all-section input[type="checkbox"] {
+  margin-right: 20px;
+  transform: scale(1.2);
+}
+
+.select-all-section label {
+  color: #6D6D6D; /* ganti dengan warna yang kamu mau */
+}
+
+.empty-space {
+    background-color: white; /* Warna putih */
+    height: 20px; /* Atur tinggi sesuai kebutuhan */
+    width: 100%; /* Agar memenuhi lebar area */
+}
+
+.checkout-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: white; /* biarkan transparan, fokus ke shape */
+  padding: 20px;
+  z-index: 10;
+  align-items: center;
+}
+
+/* shape putih */
+.total-shape {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 5px;
+  width: 90%;
+  max-width: 1050px;
+  margin: auto;
+  margin-left: 213px;
+  
+}
+
+/* total price text */
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  font-family: 'Poppins', sans-serif;
+  margin-left: 30px;
+}
+
+.total span1{
+  margin-right: 30px;
+}
+
+/* button */
+.checkout-button {
+  background-color: #3e8e41;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  width: 90%;
+  max-width: 1050px;
+  margin: 5px;
+  margin-left: 213px;
+  font-family: 'Monserrat', sans-serif;
+  font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+}
+.monthly-cart,
+.collaboration-cart {
+    padding: 10px 15px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+}
+.monthly-cart {
+    background-color: #D3F0B9; /* Hijau untuk Monthly Cart */
+}
+.collaboration-cart {
+    background-color: #D3F0B9; /* Hijau muda untuk Collaboration Cart */
+}
+.monthly-cart:hover,
+.collaboration-cart:hover {
+    opacity: 0.9; /* Efek hover */
+}
+
+.select-all-container {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* jarak antar box dan button kedua */
+  margin-bottom: 20px;
+}
+
+.select-all-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background-color: white;
+  color: gray;
+  width: 70%;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+.green-button {
+  background-color: #D1F2B2;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
