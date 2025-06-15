@@ -1,6 +1,6 @@
 /* Background wrapper khusus */
 .breadcrumb-background {
-  background-image: url('../assets/backg.png'); /* jika menggunakan CSS biasa */
+  background-image: url('../images/backg.png'); /* jika menggunakan CSS biasa */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

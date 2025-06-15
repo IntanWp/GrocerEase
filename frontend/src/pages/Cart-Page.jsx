@@ -1,13 +1,14 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import './components/CartItem.css';
-import CartItem from './components/CartItem';
-import riceImg from './assets/rice.jpg';
-import oysterImg from './assets/oyster.webp';
-import soySauceImg from './assets/soy_sauce.jpg';
-import sirloinImg from './assets/sirloin.jpg';
-import Breadcrumbs from './components/Breadcrumbs';
-import Header from './components/Header';
+import '../components/CartItem.css';
+import CartItem from '../components/CartItem';
+import riceImg from '../images/rice.jpg';
+import oysterImg from '../images/oyster.webp';
+import soySauceImg from '../images/soy_sauce.jpg';
+import sirloinImg from '../images/sirloin.jpg';
+
+import Breadcrumbs from '../components/Breadcrumbs';
+import Header from '../components/Header.jsx';
 
 const App = () => {
   const [selectedItems, setSelectedItems] = useState([]);
