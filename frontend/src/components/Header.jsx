@@ -1,10 +1,10 @@
 // src/components/Header.jsx
 import React from 'react';
 import './Header.css';
-import logo from '../assets/logo.png'; // pastikan ini logo GrocerEase
-import cartIcon from '../assets/cart.png'; // ikon keranjang
-import bellIcon from '../assets/bell.png'; // ikon notifikasi
-import profileIcon from '../assets/user.png'; // ikon profil
+import logo from '../images/logo.png'; // pastikan ini logo GrocerEase
+import cartIcon from '../images/cart.png'; // ikon keranjang
+import bellIcon from '../images/bell.png'; // ikon notifikasi
+import profileIcon from '../images/user.png'; // ikon profil
 
 const Header = () => {
   return (

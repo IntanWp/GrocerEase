@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Breadcrumbs.css'; // Import CSS kamu
-import arrow from '../assets/arrow.png';
+import arrow from '../images/arrow.png';
 
 const Breadcrumbs = ({ items = [], separator }) => {
 const defaultSeparator = (
