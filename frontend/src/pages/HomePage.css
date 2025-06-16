@@ -1,78 +1,268 @@
-/* src/pages/HomePage.css */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #fafafa;
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+.homepage {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Banner Section */
 .banner {
-  background-color: #fff8e1;
-  padding: 40px 20px;
-  text-align: center;
-  background-image: url('../images/banner-graphic.png');
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(135deg, #a3db7e 0%, #7bc142 100%);
+  padding: 40px 0;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
 }
 
 .banner h2 {
-  font-size: 32px;
-  color: #388e3c;
-  font-weight: bold;
-   text-align: left;
+  color: #2d5016;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+}
+
+.banner-illustration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.banner-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Main Content */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .section {
-  padding: 20px 40px;
+  margin-bottom: 50px;
 }
 
 .section h3 {
-  font-size: 20px;
-  margin-bottom: 16px;
-  color: #333;
+  color: #2d5016;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  font-family: "Poppins", sans-serif;
 }
 
+/* Card Container */
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
+  max-width: 100%;
 }
 
-.card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 160px;
-  padding: 10px;
+/* Recipe Cards */
+.recipe-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-card .card-image {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+}
+
+.recipe-card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recipe-card .card-content {
+  padding: 15px;
   text-align: center;
+}
+
+.recipe-card .card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  font-family: "Poppins", sans-serif;
+}
+
+.slider-container {
+  overflow: hidden;
+}
+
+.recipe-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.recipe-slider::-webkit-scrollbar {
+  height: 6px;
+}
+
+.recipe-slider::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.recipe-slider::-webkit-scrollbar-thumb {
+  background: #a3db7e;
+  border-radius: 3px;
+}
+
+.recipe-slider::-webkit-scrollbar-thumb:hover {
+  background: #7bc142;
+}
+
+.recipe-slider .recipe-card {
+  flex: 0 0 180px;
+  min-width: 180px;
+}
+
+/* Product Cards */
+.product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
 }
 
-.card img {
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.product-card .card-image {
   width: 100%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: 140px;
+  overflow: hidden;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card p {
-  margin: 8px 0;
-  font-size: 14px;
+.product-card .card-image img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
 }
 
-.price {
-  font-weight: bold;
+.product-card .card-content {
+  padding: 15px;
+  text-align: left;
+  position: relative;
+}
+
+.product-card .price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d5016;
+  margin-bottom: 8px;
+  font-family: "Poppins", sans-serif;
+}
+
+.product-card .product-title {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
 }
 
 .add-button {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: #4CAF50;
+  bottom: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 18px;
+  font-size: 1.2rem;
+  font-weight: bold;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0 20px;
+  }
+
+  .banner-content {
+    padding: 0 20px;
+  }
+
+  .banner h2 {
+    font-size: 2rem;
+  }
+
+  .card-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .section h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .banner h2 {
+    font-size: 1.8rem;
+  }
+
+  .recipe-card .card-image,
+  .product-card .card-image {
+    height: 120px;
+  }
 }
