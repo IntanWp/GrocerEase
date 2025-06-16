@@ -1,7 +1,7 @@
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import Header from '../components/Header.jsx';
 
-const EmptyCart = () => {
+const EmptyMonthlyCart = () => {
     return (
         <div className="checkoutresponse">
             <Header />
@@ -10,7 +10,8 @@ const EmptyCart = () => {
                 <Breadcrumbs 
                     items={[
                         { label: 'Home', href: '/home' },
-                        { label: 'Shopping Cart', current: true }
+                        { label: 'Shopping Cart', href: '/empty-cart' },
+                        { label: 'Monthly Cart', current: true}
                     ]}
                 />
             </div>
@@ -35,4 +36,4 @@ const EmptyCart = () => {
     );
 }
 
-export default EmptyCart;
+export default EmptyMonthlyCart;

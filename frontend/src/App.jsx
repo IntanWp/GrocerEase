@@ -10,6 +10,9 @@ import CollabCart from './pages/Collaboration-cart';
 import EmptyCart from './pages/EmptyCart';
 import CheckoutPage from './pages/CheckOutPage';
 import AccountPage from './pages/AccountPage';
+import EmptyMonthlyCart from './pages/EmptyMonthlyCart';
+import EmptyCollabCart from './pages/EmptyCollabCart';
+import CheckoutResponse from './pages/CheckoutResponse';
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
         <Route path="/empty-cart" element={<EmptyCart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/empty-monthly-cart" element={<EmptyMonthlyCart />} />
+        <Route path="/empty-collab-cart" element={<EmptyCollabCart />} />
+        <Route path="/checkout-response" element={<CheckoutResponse />} />
       </Routes>
     </Router>
   );
