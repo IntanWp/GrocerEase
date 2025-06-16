@@ -1,11 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '@fontsource/poppins/300.css';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/600.css';
+import '@fontsource/poppins/700.css';
 import './LoginPage.css';
 import logo from '../images/logo.png';
 import userIcon from '../images/user.png';
 import lockIcon from '../images/lock.png';
 import belanjaan from '../images/belanjaan.png';
 
+
 function LoginPage() {
+  const navigate = useNavigate(); // ← ini untuk pindah halaman
+
   return (
     <div>
       <div className="logo">
@@ -17,8 +25,7 @@ function LoginPage() {
           <h1 className="tagline">Organic & Healthy <br /> Products</h1>
           <p className="desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            incididunt ut labore et dolore magna aliqua.
           </p>
 
           <form>
@@ -33,9 +40,9 @@ function LoginPage() {
             </div>
 
             <div className="form-buttons">
-              <button type="submit">Login</button>
-              <button type="submit">Sign Up</button>
-            </div>
+              <button type="submit" className="login-btn">Login</button>
+              <button type="button" className="signup-btn" onClick={() => navigate('/register')}>Sign Up</button>
+            </div>  
           </form>
         </div>
 
@@ -48,3 +55,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
