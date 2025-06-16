@@ -31,9 +31,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cartData: {
-    type: Object,
-    default: {},
+  regularCart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'regularCart',
+    default: null
+  },
+  monthlyCart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'monthlyCart',
+    default: null
+  },
+  activeCollabCart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'collaborativeCart',
+    default: null
   }
 }, {minimize: false});
 
