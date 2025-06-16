@@ -12,9 +12,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/monthly-cart" element={<MonthlyCart />} />
         <Route path="/Collaboration-cart" element={<CollabCart />} />

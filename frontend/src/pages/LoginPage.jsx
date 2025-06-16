@@ -40,7 +40,7 @@ function LoginPage() {
             </div>
 
             <div className="form-buttons">
-              <button type="submit" className="login-btn">Login</button>
+              <button type="submit" className="login-btn" onClick={() => navigate('/home')}>Login</button>
               <button type="button" className="signup-btn" onClick={() => navigate('/register')}>Sign Up</button>
             </div>  
           </form>
