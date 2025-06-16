@@ -8,18 +8,20 @@ import CartPage from './pages/Cart-Page';
 import MonthlyCart from './pages/MonthlyCart';
 import CollabCart from './pages/Collaboration-cart';
 import EmptyCart from './pages/EmptyCart';
+import CheckoutPage from './pages/CheckOutPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/monthly-cart" element={<MonthlyCart />} />
         <Route path="/Collaboration-cart" element={<CollabCart />} />
         <Route path="/Empty-cart" element={<EmptyCart />} />
+        <Route path="/" element={<CheckoutPage />} />
       </Routes>
     </Router>
   );
