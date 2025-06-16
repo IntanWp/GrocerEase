@@ -39,16 +39,16 @@
 }
 
 .search-bar {
-  width: 100%;
-  padding: 12px 20px;
-  border-radius: 25px;
+  flex: 1;
+  max-width: 600px; /* <-- batas maksimal lebar search bar */
+  min-width: 200px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: none;
-  font-size: 14px;
-  background-color: white;
-  outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  margin: 0 24px 0 16px; /* kasih jarak kanan */
 }
+
 
 .search-bar::placeholder {
   color: #999;
