@@ -1,0 +1,77 @@
+/* src/pages/HomePage.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fafafa;
+  margin: 0;
+}
+
+.banner {
+  background-color: #fff8e1;
+  padding: 40px 20px;
+  text-align: center;
+  background-image: url('../images/banner-graphic.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.banner h2 {
+  font-size: 32px;
+  color: #388e3c;
+  font-weight: bold;
+}
+
+.section {
+  padding: 20px 40px;
+}
+
+.section h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 160px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.add-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  cursor: pointer;
+}
