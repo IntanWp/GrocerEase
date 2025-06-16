@@ -7,6 +7,8 @@ import userRouter from './routes/userRoute.js';
 import productRouter from './routes/productRoute.js';
 import recipeRouter from './routes/recipeRoute.js';
 import collabCartRouter from './routes/collabCartRoute.js';
+import regularCartRouter from './routes/regularCartRoute.js';
+import monthlyCartRouter from './routes/monthlyCartRoute.js';
 
 //APP config
 const app = express();
@@ -24,6 +26,8 @@ app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
 app.use('/api/recipe', recipeRouter)
 app.use('/api/collab-cart', collabCartRouter)
+app.use('/api/regular-cart', regularCartRouter)
+app.use('/api/monthly-cart', monthlyCartRouter)
 
 app.get('/', (req, res) => {
   res.send('API Working!');
