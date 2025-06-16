@@ -1,157 +1,174 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-html{
-    height: 100%;
-}
-
+html,
 body {
-    background-color: #FFFBE6;
-    font-family: "Poppins", sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  background-color: #fffbe6;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #fffbe6;
+  position: relative;
 }
 
 .logo {
-    position: absolute; /* Moves independently */
-    top: 5%; /* Adjust this */
-    left: 4%;
-    padding: 1%;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
 }
 
+.logo img {
+  height: 40px;
+  width: auto;
+}
 
 .container {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 0 4rem;
+  gap: 4rem;
 }
 
 .tagline-container {
-    max-width: 50%;
-    color: #347928;
-    font-weight: 600;
-    font-size: 150%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Keeps it vertically aligned */
-    padding-top: 10vh; /* Adjusts the top space dynamically */
+  flex: 1;
+  max-width: 500px;
+  padding-top: 4rem; /* Changed from 6rem to 4rem */
 }
 
+.tagline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #347928;
+  line-height: 1.1;
+  margin-bottom: 1rem; /* Changed from 1.5rem */
+}
 
 .desc {
-    font-weight: 600;
-    font-size: 60%;
-    margin-bottom: 2%;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #347928;
+  line-height: 1.6;
+  margin-bottom: 1.5rem; /* Changed from 2rem */
 }
 
 .belanjaan-container {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end; /* Push the image to the right */
-    margin-top: 2vh;
-    margin-right: 1%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .belanjaan-container img {
-    max-width: 100%; 
-    height: auto;
-}
-
-.form-buttons {
-    display: flex;
-    gap: 20px; /* Space between buttons */
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 400px;  /* Ensures it doesn’t stretch too much */
-    margin: 18px auto;  /* Centers it properly */
-    padding: 0 20px;  /* Adds breathing space */
-    margin-left: -1%;
+  width: 100%;
+  max-width: 400px;
 }
 
 .input-container {
-    display: flex;
-    align-items: center;
-    width: 400%;
-    max-width: 400px;
-    background-color: #C0EBA6;
-    border-radius: 40px;
-    padding: 0px 18px;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #c0eba6;
+  border-radius: 50px;
+  padding: 0.5rem 1.5rem; /* Changed from 0.75rem 1.5rem */
+  margin-bottom: 0.8rem; /* Changed from 1rem */
+  width: 100%;
 }
 
 .input-icon {
-    width: 24px; /* Adjust icon size */
-    height: 24px;
-    margin-right: 40px; /* Space between icon and text */
+  width: 20px;
+  height: 20px;
+  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .input-container input {
-    flex: 1; /* Makes input field take available space */
-    border: none;
-    height: 32px;
-    padding: 5px 12px;
-    font-size: 60%;
-    outline: none;
-    padding-top: 4%;
-    background: none; /* Makes input blend into container */
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.9rem;
+  color: #347928;
+  font-family: "Poppins", sans-serif;
 }
 
-input {
-    width: 400px; 
-    max-width: 400px;
-    padding: 12px;
-    margin-left: -11%;
-    margin-bottom: 10px; /* Space between username and password */
-    border: none;
-    border-radius: 25px; 
-    font-size: 16px;
-    outline: none;
-    background-color: #C0EBA6;
-    text-align: left; /* Center text inside input */
+.input-container input::placeholder {
+  color: #347928;
+  opacity: 0.8;
 }
 
-button[type="submit"][name="action"][value="login"] {
-    width: 190px;
-    padding: 10px;
-    font-weight: 600;
-    border: none;
-    border-radius: 25px;
-    background-color: #347928;
-    color: white;
-    font-size: 65%;
-    cursor: pointer;
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem; /* Changed from 1.5rem */
+}
+
+.login-btn {
+  background-color: #347928;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #2a5d1e;
+}
+
+.signup-btn {
+  background-color: transparent;
+  color: #347928;
+  border: 2px solid #347928;
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+  background-color: #347928;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 2rem;
     text-align: center;
-}
+  }
 
-button[type="submit"][name="action"][value="login"]:hover {
-    background-color: #2a5d1e;
-}
+  .tagline {
+    font-size: 2rem;
+  }
 
-button[type="submit"][name="action"][value="signup"] {
-    width: 190px;
-    padding: 10px;
-    font-weight: 600;
-    border: 2px solid #347928;
-    border-radius: 25px;
-    background-color: transparent;
-    color: #347928;
-    font-size: 65%;
-    cursor: pointer;
-    text-align: center;
-}
+  .form-buttons {
+    flex-direction: column;
+  }
 
-button[type="submit"][name="action"][value="signup"]:hover {
-    background-color: #347928;
-    color: white;
+  .login-btn,
+  .signup-btn {
+    width: 100%;
+  }
 }

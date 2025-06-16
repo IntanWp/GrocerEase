@@ -1,0 +1,173 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar Section */
+.sidebar {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidegreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.sidebar-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hi {
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 2rem;
+}
+
+.logo-welcome-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoalt {
+  height: 60px;
+  width: auto;
+  margin-bottom: 1rem;
+  margin-left: 80px;
+}
+
+.welcome {
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.signin-btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50px;
+  padding: 0.75rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.signin-btn:hover {
+  background-color: white;
+  color: #4a7c59;
+}
+
+/* Form Container Section */
+.form-container {
+  flex: 1;
+  background-color: #fffbe6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.create {
+  color: #347928;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.form-input {
+  width: 100%;
+  background-color: #c0eba6;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  color: #347928;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #347928;
+  opacity: 0.8;
+}
+
+.register-signup-btn {
+  background-color: #347928;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.register-signup-btn:hover {
+  background-color: #2a5d1e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    min-height: 40vh;
+  }
+
+  .form-container {
+    min-height: 60vh;
+  }
+
+  .create {
+    font-size: 2rem;
+  }
+
+  .hi {
+    max-width: 200px;
+  }
+
+  .welcome {
+    font-size: 1.5rem;
+  }
+}
