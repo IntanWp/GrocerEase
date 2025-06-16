@@ -3,7 +3,6 @@ import React from 'react';
 import './Header.css';
 import logo from '../images/logoalt.png'; // pastikan ini logo GrocerEase
 import cartIcon from '../images/cart.png'; // ikon keranjang
-import bellIcon from '../images/bell.png'; // ikon notifikasi
 import profileIcon from '../images/user1.png'; // ikon profil
 
 const Header = () => {
@@ -16,7 +15,6 @@ const Header = () => {
       <input type="text" className="search-bar" placeholder="Search here" />
       <div className="header-icons">
         <img src={cartIcon} alt="Cart" className="icon" />
-        <img src={bellIcon} alt="Notifications" className="icon" />
         <img src={profileIcon} alt="Profile" className="icon" />
       </div>
     </header>
