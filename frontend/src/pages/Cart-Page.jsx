@@ -74,17 +74,15 @@ const App = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container">
-        <div className="select-all-container">
-          <div className="select-all-box">
-            <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
-            <label htmlFor="select-all">Select All</label>
-          </div>
-          <button className="green-button">Monthly Cart</button>
-          <button className="green-button">Collaboration Cart</button>
+      <div className="select-all-container">
+        <div className="select-all-box">
+          <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
+          <label htmlFor="select-all">Select All</label>
         </div>
-
-
+        <button className="green-button">Monthly Cart</button>
+        <button className="green-button">Collaboration Cart</button>
+      </div>
+      <div className="container">
         {items.map(item => (
           <CartItem
             key={item.id}

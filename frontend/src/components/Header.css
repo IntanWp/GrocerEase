@@ -72,25 +72,53 @@
 .header-icons {
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-shrink: 0;
+  gap: 15px;
+  min-width: 200px;
+  justify-content: flex-end;
 }
 
 .icon-link {
+  cursor: pointer;
   display: flex;
   align-items: center;
-  text-decoration: none;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.icon-link:hover {
+  transform: scale(1.05);
 }
 
 .icon {
   width: 28px;
   height: 28px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  display: block;
 }
 
-.icon:hover {
-  transform: scale(1.1);
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Poppins", sans-serif;
+  color: #2d4a22;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background-color: #2d4a22;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #1e3217;
 }
 
 /* Responsive Design */

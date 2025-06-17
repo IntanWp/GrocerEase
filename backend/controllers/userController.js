@@ -122,4 +122,64 @@ const adminLogin = async(req, res) => {
     }
 }
 
-export { loginUser, registerUser, adminLogin };
+// Get user profile
+const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    const user = await userModel.findById(userId).select('-password');
+    
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      user
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Update user profile
+const updateUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { firstName, lastName, username, email, address, phoneNumber } = req.body;
+    
+    const user = await userModel.findByIdAndUpdate(
+      userId, 
+      { firstName, lastName, username, email, address, phoneNumber },
+      { new: true }
+    ).select('-password');
+    
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export { loginUser, registerUser, adminLogin, getUserProfile, updateUserProfile};

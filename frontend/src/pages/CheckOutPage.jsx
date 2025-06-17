@@ -1,20 +1,54 @@
+import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import "./CheckOutPage.css"
 import Header from "../components/Header"
 import Breadcrumbs from "../components/Breadcrumbs"
-import pepperImg from "../images/pepper.png"
-import margarineImg from "../images/margarine.png"
 import mastercardImg from "../images/mastercard.png"
 
 export default function CheckoutPage() {
+  const { user } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [checkoutItems, setCheckoutItems] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Get checkout items from location state or redirect to cart
+    if (location.state && location.state.items) {
+      setCheckoutItems(location.state.items)
+    } else {
+      navigate('/cart')
+    }
+    setLoading(false)
+  }, [location.state, navigate])
+
+  const calculateTotal = () => {
+    const itemsTotal = checkoutItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+    const shipping = 7000
+    return { itemsTotal, shipping, total: itemsTotal + shipping }
+  }
+
+  const handlePayment = () => {
+    // Simulate payment processing
+    navigate('/checkout-response')
+  }
+
   const breadcrumbItems = [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "/home" },
+    { label: "Cart", href: "/cart" },
     { label: "Checkout", current: true },
   ]
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  const { itemsTotal, shipping, total } = calculateTotal()
 
   return (
     <div className="checkout-wrapper">
       <Header />
-
       <Breadcrumbs items={breadcrumbItems} />
 
       <div className="checkout-container">
@@ -28,46 +62,29 @@ export default function CheckoutPage() {
             <div className="shipping-row">
               <span className="label">Home</span>
               <span className="separator">|</span>
-              <span className="name">Kevin Prananta Tjhai</span>
+              <span className="name">User</span>
             </div>
             <p className="address">
-              Jl. Kecapi 2, Taman Pulo Indah Blok R3 No. 5, Penggilingan, Cakung, Jakarta Timur, DKI Jakarta,
-              6287785196685
+              Default shipping address will be displayed here
             </p>
           </div>
         </section>
 
         {/* Product Section */}
         <section className="checkout-section items">
-          <div className="item">
-            <img src={pepperImg || "/placeholder.svg"} alt="Pepper" className="item-image" />
-            <div className="item-details">
-              <h4>Pepper 30 gr</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur. Morbi eget vestibulum risus at massa lacus. Elementum sit enim
-                elementum id commodo faucibus at porta.
-              </p>
-              <div className="item-bottom">
-                <span className="quantity">1x</span>
-                <strong className="price">Rp 25.000</strong>
+          {checkoutItems.map((item, index) => (
+            <div className="item" key={index}>
+              <img src={item.image || "/placeholder.svg"} alt={item.name} className="item-image" />
+              <div className="item-details">
+                <h4>{item.name}</h4>
+                <p>{item.description || "Product description"}</p>
+                <div className="item-bottom">
+                  <span className="quantity">{item.quantity}x</span>
+                  <strong className="price">Rp {(item.price * item.quantity).toLocaleString('id-ID')}</strong>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="item">
-            <img src={margarineImg || "/placeholder.svg"} alt="Margarine" className="item-image" />
-            <div className="item-details">
-              <h4>Margarine 500 gr</h4>
-              <p>
-                Lorem ipsum dolor sit amet consectetur. Morbi eget vestibulum risus at massa lacus. Elementum sit enim
-                elementum id commodo faucibus at porta.
-              </p>
-              <div className="item-bottom">
-                <span className="quantity">1x</span>
-                <strong className="price">Rp 25.000</strong>
-              </div>
-            </div>
-          </div>
+          ))}
         </section>
 
         {/* Payment Summary */}
@@ -76,15 +93,15 @@ export default function CheckoutPage() {
           <div className="summary-content">
             <div className="summary-row">
               <span>Total Item(s) Price</span>
-              <span>Rp.50.000,00</span>
+              <span>Rp {itemsTotal.toLocaleString('id-ID')}</span>
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              <span>Rp.7.000,00</span>
+              <span>Rp {shipping.toLocaleString('id-ID')}</span>
             </div>
             <div className="summary-row total">
               <span>Total Price</span>
-              <span>Rp.57.000,00</span>
+              <span>Rp {total.toLocaleString('id-ID')}</span>
             </div>
           </div>
         </section>
@@ -105,7 +122,9 @@ export default function CheckoutPage() {
         </section>
 
         {/* Pay Button */}
-        <button className="pay-btn">Pay</button>
+        <button className="pay-btn" onClick={handlePayment}>
+          Pay Rp {total.toLocaleString('id-ID')}
+        </button>
       </div>
     </div>
   )

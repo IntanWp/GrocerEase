@@ -1,11 +1,69 @@
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../contexts/AuthContext';
 import "./RegisterPage.css"
 import sidegreen from "../images/sidebar.png"
 import hi from "../images/hi.png"
 import logoalt from "../images/logoalt.png"
 
 function RegisterPage() {
-  const navigate = useNavigate(); // inisialisasi
+  const navigate = useNavigate();
+  const { register, user, loading: authLoading } = useAuth();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
+    address: '',
+    phoneNumber: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate('/home', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    const result = await register(formData);
+
+    if (result.success) {
+      navigate('/home');
+    } else {
+      setError(result.message);
+    }    setLoading(false);
+  };
+
+  // Show loading if auth is still being checked
+  if (authLoading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px',
+        fontFamily: 'Poppins, sans-serif'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="page">
@@ -25,21 +83,77 @@ function RegisterPage() {
 
       <div className="form-container">
         <h1 className="create">Create Account</h1>
-        <form method="GET" className="register-form">
-          <input type="text" name="first_name" placeholder="First name" className="form-input" />
-          <input type="text" name="last_name" placeholder="Last name" className="form-input" />
-          <input type="username" name="username" placeholder="Username" className="form-input" required />
+        {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleSubmit} className="register-form">
+          <input 
+            type="text" 
+            name="firstName" 
+            placeholder="First name" 
+            className="form-input" 
+            value={formData.firstName}
+            onChange={handleChange}
+            required 
+          />
+          <input 
+            type="text" 
+            name="lastName" 
+            placeholder="Last name" 
+            className="form-input" 
+            value={formData.lastName}
+            onChange={handleChange}
+            required 
+          />
+          <input 
+            type="text" 
+            name="username" 
+            placeholder="Username" 
+            className="form-input" 
+            value={formData.username}
+            onChange={handleChange}
+            required 
+          />
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="Email" 
+            className="form-input" 
+            value={formData.email}
+            onChange={handleChange}
+            required 
+          />
+          <input 
+            type="text" 
+            name="address" 
+            placeholder="Address" 
+            className="form-input" 
+            value={formData.address}
+            onChange={handleChange}
+            required 
+          />
           <input
             type="tel"
-            name="phone"
-            placeholder="Phone number (+1234567890)"
+            name="phoneNumber"
+            placeholder="Phone number (+621234567890)"
             className="form-input"
-            pattern="^\\+?[0-9]{10,15}$"
+            value={formData.phoneNumber}
+            onChange={handleChange}
             required
           />
-          <input type="password" name="password" placeholder="Password" className="form-input" />
-          <button type="submit" name="action" value="signup" formaction="homepage.html" className="register-signup-btn">
-            Sign Up
+          <input 
+            type="password" 
+            name="password" 
+            placeholder="Password" 
+            className="form-input" 
+            value={formData.password}
+            onChange={handleChange}
+            required 
+          />
+          <button 
+            type="submit" 
+            className="register-signup-btn"
+            disabled={loading}
+          >
+            {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
       </div>
