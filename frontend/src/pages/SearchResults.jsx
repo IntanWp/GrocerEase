@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { searchAPI, productAPI, recipeAPI, regularCartAPI } from '../services/api';
+import { searchAPI, productAPI, recipeAPI } from '../services/api';
 import Header from '../components/Header';
 import Breadcrumbs from '../components/Breadcrumbs';
+import CartModal from '../components/CartModal';
 import './SearchResults.css';
 
 const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  
-  const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [products, setProducts] = useState([]);
   const [allRecipes, setAllRecipes] = useState([]);
@@ -19,6 +19,8 @@ const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [showAllRecipes, setShowAllRecipes] = useState(false);
   const [showAllProducts, setShowAllProducts] = useState(false);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     // Extract search query from URL
@@ -100,24 +102,28 @@ const SearchResults = () => {
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
   };
-
   const handleAddToCart = async (productId) => {
-    try {
-      if (!user || !user.id) {
-        alert('Please login to add items to cart');
-        return;
-      }
-
-      const response = await regularCartAPI.addItemToRegularCart(user.id, productId, 1);
-      if (response.success) {
-        alert('Item added to cart successfully!');
-      } else {
-        alert('Failed to add item to cart: ' + response.message);
-      }
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert('Failed to add item to cart');
+    if (!user || !user.id) {
+      alert('Please login to add items to cart');
+      return;
     }
+
+    // Find the product by ID from all products or displayed products
+    const allProductsToSearch = showAllProducts ? allProducts : products;
+    const product = allProductsToSearch.find(p => p._id === productId);
+    
+    if (!product) {
+      alert('Product not found');
+      return;
+    }
+
+    setSelectedProduct(product);
+    setShowAddToCartModal(true);
+  };
+
+  const handleModalSuccess = (cartType, quantity) => {
+    // Optional: You can add additional logic here if needed
+    console.log(`Added ${quantity} items to ${cartType} cart`);
   };
 
   const handleViewMoreRecipes = () => {
@@ -275,11 +281,17 @@ const SearchResults = () => {
                 >
                   View More Products ({allProducts.length - 20} more)
                 </button>
-              </div>
-            )}
+              </div>            )}
           </div>
         )}
-      </div>
+      </div>      {/* Add to Cart Modal */}      <CartModal
+        isOpen={showAddToCartModal}
+        onClose={() => setShowAddToCartModal(false)}
+        modalType="addToCart"
+        product={selectedProduct}
+        user={user}
+        onSuccess={handleModalSuccess}
+      />
     </div>
   );
 };

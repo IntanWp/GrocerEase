@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { regularCartAPI, userAPI } from '../services/api'
+import { regularCartAPI, monthlyCartAPI, collabCartAPI, userAPI } from '../services/api'
 import "./CheckOutPage.css"
 import Header from "../components/Header"
 import Breadcrumbs from "../components/Breadcrumbs"
@@ -15,11 +15,22 @@ export default function CheckoutPage() {
   const [userProfile, setUserProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
-    useEffect(() => {
+  const [cartType, setCartType] = useState('regular')
+  const [cartId, setCartId] = useState(null)
+  
+  useEffect(() => {
     const initializeCheckout = async () => {
       // Get checkout items from location state or redirect to cart
       if (location.state && location.state.selectedItems) {
         setCheckoutItems(location.state.selectedItems)
+        
+        // Set cart type and cart ID from location state
+        if (location.state.cartType) {
+          setCartType(location.state.cartType)
+        }
+        if (location.state.cartId) {
+          setCartId(location.state.cartId)
+        }
         
         // Fetch user profile for shipping address
         if (user && user.id) {
@@ -42,12 +53,12 @@ export default function CheckoutPage() {
     
     initializeCheckout()
   }, [location.state, navigate, user])
-
   const calculateTotal = () => {
     const itemsTotal = checkoutItems.reduce((total, item) => total + (item.price * item.quantity), 0)
     const shipping = 7000
     return { itemsTotal, shipping, total: itemsTotal + shipping }
   }
+
   const handlePayment = async () => {
     if (processing) return;
     
@@ -57,8 +68,24 @@ export default function CheckoutPage() {
       // Get product IDs from checkout items
       const productIds = checkoutItems.map(item => item.id);
       
-      // Process checkout through backend
-      const response = await regularCartAPI.checkoutRegularCart(user.id, productIds);
+      let response;
+      
+      // Process checkout based on cart type
+      switch (cartType) {
+        case 'regular':
+          response = await regularCartAPI.checkoutRegularCart(user.id, productIds);
+          break;
+        case 'monthly':
+          response = await monthlyCartAPI.checkoutMonthlyCart(user.id, productIds);
+          break;        case 'collaboration':
+          if (!cartId) {
+            throw new Error('Cart ID is required for collaboration cart checkout');
+          }
+          response = await collabCartAPI.checkoutCart(cartId, user.id);
+          break;
+        default:
+          throw new Error('Invalid cart type');
+      }
       
       if (response.success) {
         // Navigate to success page with order details
@@ -67,7 +94,8 @@ export default function CheckoutPage() {
             success: true,
             checkedOutItems: checkoutItems,
             totalAmount: total,
-            orderDate: new Date().toISOString()
+            orderDate: new Date().toISOString(),
+            cartType: cartType
           }
         });
       } else {
@@ -80,12 +108,20 @@ export default function CheckoutPage() {
       setProcessing(false);
     }
   }
-
-  const breadcrumbItems = [
-    { label: "Home", href: "/home" },
-    { label: "Cart", href: "/cart" },
-    { label: "Checkout", current: true },
-  ]
+  const getBreadcrumbItems = () => {
+    const cartLabel = cartType === 'monthly' ? 'Monthly Cart' : 
+                     cartType === 'collaboration' ? 'Collaboration Cart' : 
+                     'Cart';
+    const cartHref = cartType === 'monthly' ? '/monthly-cart' : 
+                    cartType === 'collaboration' ? '/collaboration-cart' : 
+                    '/cart';
+    
+    return [
+      { label: "Home", href: "/home" },
+      { label: cartLabel, href: cartHref },
+      { label: "Checkout", current: true },
+    ];
+  };
 
   if (loading) {
     return <div>Loading...</div>
@@ -96,7 +132,7 @@ export default function CheckoutPage() {
   return (
     <div className="checkout-wrapper">
       <Header />
-      <Breadcrumbs items={breadcrumbItems} />
+      <Breadcrumbs items={getBreadcrumbItems()} />
 
       <div className="checkout-container">
         {/* Shipping Section */}

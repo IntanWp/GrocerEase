@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { productAPI, recipeAPI, regularCartAPI } from '../services/api';
+import { productAPI, recipeAPI } from '../services/api';
 import Header from "../components/Header"
+import CartModal from "../components/CartModal"
 import "./HomePage.css"
 
 import bannerGraphic from "../images/banner-graphic.png"
@@ -13,6 +14,8 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     if (user && user.id) {
@@ -43,25 +46,27 @@ const HomePage = () => {
 
   const handleRecipeClick = (recipeId) => {
     navigate(`/recipe/${recipeId}`);
-  };
-  const handleAddToCart = async (productId) => {
-    try {
-      if (!user || !user.id) {
-        alert('User session expired. Please login again.');
-        logout();
-        return;
-      }
-
-      const response = await regularCartAPI.addItemToRegularCart(user.id, productId, 1);
-      if (response.success) {
-        alert('Item added to cart successfully!');
-      } else {
-        alert('Failed to add item to cart: ' + response.message);
-      }
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert('Failed to add item to cart');
+  };  const handleAddToCart = async (productId) => {
+    if (!user || !user.id) {
+      alert('User session expired. Please login again.');
+      logout();
+      return;
     }
+
+    // Find the product by ID
+    const product = products.find(p => p._id === productId);
+    if (!product) {
+      alert('Product not found');
+      return;
+    }
+
+    setSelectedProduct(product);
+    setShowAddToCartModal(true);
+  };
+
+  const handleModalSuccess = (cartType, quantity) => {
+    // Optional: You can add additional logic here if needed
+    console.log(`Added ${quantity} items to ${cartType} cart`);
   };
 
   const handleProductClick = (productId) => {
@@ -131,9 +136,16 @@ const HomePage = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
+          </div>        </div>
+      </div>      {/* Add to Cart Modal */}
+      <CartModal
+        isOpen={showAddToCartModal}
+        onClose={() => setShowAddToCartModal(false)}
+        modalType="addToCart"
+        product={selectedProduct}
+        user={user}
+        onSuccess={handleModalSuccess}
+      />
     </div>
   )
 }

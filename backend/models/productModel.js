@@ -17,22 +17,22 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-    category: {
-        type: String,
-        required: true,
-    },
-    stock: {
-        type: Number,
-        required: true,
-    },
-    weight:{
-        type: String,
-        required: true,
-    },
-    advantages: {
-        type: String,
-        required: true,
-    }
+  category: {
+      type: String,
+      required: true,
+  },
+  stock: {
+      type: Number,
+      required: true,
+  },
+  weight:{
+      type: String,
+      required: true,
+  },
+  advantages: {
+      type: String,
+      required: true,
+  }
 });
 
 const productModel = mongoose.models.product || mongoose.model("product", productSchema);

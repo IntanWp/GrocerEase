@@ -7,12 +7,12 @@ html, body {
 }
 
 .container {
- width: 100%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
   padding: 20px;
-  padding-top: 30px; /* Extra space untuk breadcrumbs */
+  padding-top: 40px; /* Extra space untuk breadcrumbs */
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -263,7 +263,7 @@ html, body {
   right: 0;
   width: 100%;
   background-color: white;
-  padding: 20px;
+  padding: 20px 0px;
   z-index: 20;
   box-sizing: border-box;
 }

@@ -188,9 +188,7 @@ const CartPage = () => {
           </div>
           <button className="green-button" onClick={goToMonthly}>Monthly Cart</button>
           <button className="green-button" onClick={goToCollab}>Collaboration Cart</button>
-        </div>
-
-        {items.map(item => (
+        </div>        {items.map(item => (
           <CartItem
             key={item.id}
             {...item}
@@ -202,21 +200,41 @@ const CartPage = () => {
           />
         ))}
 
-        <div className="checkout-footer">
-          <div className="total-shape">
-            <div className="total">
-              <span>Total Price</span>
-              <span className="total-value">Rp {total.toLocaleString('id-ID')},00</span>
-            </div>
-          </div>
-          <button 
-            className="checkout-button" 
-            disabled={selectedItems.length === 0}
-            onClick={handleCheckout}
+        {/* Empty cart message when no items */}
+        {items.length === 0 && (
+          <div 
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '200px',
+              textAlign: 'center'
+            }}
           >
-            Check Out
-          </button>
-        </div>
+            <p style={{ fontSize: '1.2rem', color: '#555' }}>
+              Your shopping cart is empty. Start adding items!
+            </p>
+          </div>
+        )}
+
+        {/* Checkout Footer - only show when there are items */}
+        {items.length > 0 && (
+          <div className="checkout-footer">
+            <div className="total-shape">
+              <div className="total">
+                <span>Total Price</span>
+                <span className="total-value">Rp {total.toLocaleString('id-ID')},00</span>
+              </div>
+            </div>
+            <button 
+              className="checkout-button" 
+              disabled={selectedItems.length === 0}
+              onClick={handleCheckout}
+            >
+              Check Out
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

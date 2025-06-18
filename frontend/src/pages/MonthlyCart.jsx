@@ -1,5 +1,6 @@
-// src/App.jsx
+// src/pages/MonthlyCart.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { monthlyCartAPI } from '../services/api';
 import '../components/CartItem.css';
@@ -9,6 +10,7 @@ import Header from '../components/Header';
 
 const MonthlyCart = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [items, setItems] = useState([]);
@@ -50,8 +52,7 @@ const MonthlyCart = () => {
     } finally {
       setLoading(false);
     }
-  };
-  const updateQuantity = async (id, type) => {
+  };  const updateQuantity = async (id, type) => {
     try {
       const item = items.find(item => item.id === id);
       if (!item) return;
@@ -79,9 +80,50 @@ const MonthlyCart = () => {
     }
   };
 
+  const handleRemoveItem = async (id) => {
+    try {
+      // Remove from backend
+      const response = await monthlyCartAPI.removeFromMonthlyCart(user.id, id);
+      
+      if (response.success) {
+        // Update local state
+        const updatedItems = items.filter(item => item.id !== id);
+        setItems(updatedItems);
+        const updatedSelected = selectedItems.filter(selectedId => selectedId !== id);
+        setSelectedItems(updatedSelected);
+        setSelectAll(updatedSelected.length === updatedItems.length && updatedItems.length > 0);
+      } else {
+        console.error('Failed to remove item:', response.message);
+      }
+    } catch (error) {
+      console.error('Error removing item:', error);
+    }
+  };
   const total = items
-  .filter(item => selectedItems.includes(item.id))
-  .reduce((sum, item) => sum + item.price * item.quantity, 0);
+    .filter(item => selectedItems.includes(item.id))
+    .reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const goToRegular = () => navigate('/cart');
+  const goToCollab = () => navigate('/collaboration-cart');
+
+  const handleCheckout = () => {
+    if (selectedItems.length === 0) {
+      alert('Please select items to checkout');
+      return;
+    }
+
+    // Get selected items with full details
+    const selectedItemsData = items.filter(item => selectedItems.includes(item.id));
+    
+    // Navigate to checkout page with selected items and cart type
+    navigate('/checkout', { 
+      state: { 
+        selectedItems: selectedItemsData,
+        totalAmount: total,
+        cartType: 'monthly'
+      } 
+    });
+  };
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -96,15 +138,37 @@ const MonthlyCart = () => {
 
   const handleToggleItem = (itemId) => {
     const isChecked = selectedItems.includes(itemId);
-    const newSelectedItems = isChecked 
-      ? selectedItems.filter(id => id !== itemId) 
+    const newSelectedItems = isChecked
+      ? selectedItems.filter(id => id !== itemId)
       : [...selectedItems, itemId];
 
     setSelectedItems(newSelectedItems);
-    setSelectAll(newSelectedItems.length === items.length);
+    setSelectAll(newSelectedItems.length === items.length && items.length > 0);
   };
 
-  const totalPrice = selectedItems.length * 25000; // Assuming each item is 25000
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="container" style={{ textAlign: 'center', padding: '50px' }}>
+          <p>Loading monthly cart...</p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="container" style={{ textAlign: 'center', padding: '50px' }}>
+          <p>Error: {error}</p>
+          <button onClick={fetchCartData}>Retry</button>
+        </div>
+      </>
+    );
+  }
+  // Remove empty cart redirect - show main UI regardless
 
   return (
     <>
@@ -122,52 +186,65 @@ const MonthlyCart = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container">
-        <div className="select-all-container">
+      <div className="container">        <div className="select-all-container">
           <div className="select-all-box">
-          <input
-            type="checkbox"
-            id="select-all"
-            checked={selectAll}
-            onChange={handleSelectAll}
-          />
-          <label htmlFor="select-all">Select All</label>
-        </div>
-        </div>
-
-        {items.map(item => (
+            <input
+              type="checkbox"
+              id="select-all"
+              checked={selectAll}
+              onChange={handleSelectAll}
+            />
+            <label htmlFor="select-all">Select All</label>
+          </div>
+          <button className="green-button" onClick={goToRegular}>Regular Cart</button>
+          <button className="green-button" onClick={goToCollab}>Collaboration Cart</button>
+        </div>        {items.map(item => (
           <CartItem
             key={item.id}
             {...item}
             isSelected={selectedItems.includes(item.id)}
-            onToggle={() => {
-              const isChecked = selectedItems.includes(item.id);
-              if (isChecked) {
-                setSelectedItems(selectedItems.filter(id => id !== item.id));
-                setSelectAll(false);
-              } else {
-                const newSelected = [...selectedItems, item.id];
-                setSelectedItems(newSelected);
-                if (newSelected.length === items.length) {
-                  setSelectAll(true);
-                }
-              }
-            }}
+            onToggle={() => handleToggleItem(item.id)}
             onIncrease={() => updateQuantity(item.id, 'increase')}
             onDecrease={() => updateQuantity(item.id, 'decrease')}
+            onRemove={() => handleRemoveItem(item.id)}
           />
         ))}
 
-        {/* Checkout Footer */}
-        <div className="checkout-footer">
-          <div className="total-shape">
-            <div className="total">
-              <span>Total Price</span>
-              <span1>Rp {total.toLocaleString('id-ID')},00</span1>
-            </div>
+        {/* Empty cart message when no items */}
+        {items.length === 0 && (
+          <div 
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '200px',
+              textAlign: 'center'
+            }}
+          >
+            <p style={{ fontSize: '1.2rem', color: '#555' }}>
+              Your shopping cart is empty. Start adding items!
+            </p>
           </div>
-          <button className="checkout-button">Check Out</button>
-        </div>
+        )}
+
+        {/* Checkout Footer - only show when there are items */}
+        {items.length > 0 && (
+          <div className="checkout-footer">
+            <div className="total-shape">
+              <div className="total">
+                <span>Total Price</span>
+                <span className="total-value">Rp {total.toLocaleString('id-ID')},00</span>
+              </div>
+            </div>
+            <button 
+              className="checkout-button" 
+              disabled={selectedItems.length === 0}
+              onClick={handleCheckout}
+            >
+              Check Out
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

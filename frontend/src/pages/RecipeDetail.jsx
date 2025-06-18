@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { recipeAPI, regularCartAPI } from '../services/api';
 import Header from "../components/Header"
 import Breadcrumbs from "../components/Breadcrumbs"
+import CartModal from "../components/CartModal"
 import "./RecipeDetail.css"
 
 const RecipeDetail = () => {
@@ -15,6 +16,8 @@ const RecipeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -75,22 +78,20 @@ const RecipeDetail = () => {
   }
 
   const handleAddToCart = async (productId) => {
-    try {
-      if (!user || !user.id) {
-        alert('Please login to add items to cart');
-        return;
-      }
-
-      const response = await regularCartAPI.addItemToRegularCart(user.id, productId, 1);
-      if (response.success) {
-        alert('Item added to cart successfully!');
-      } else {
-        alert('Failed to add item to cart: ' + response.message);
-      }
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert('Failed to add item to cart');
+    if (!user || !user.id) {
+      alert('Please login to add items to cart');
+      return;
     }
+
+    // Find the product by ID
+    const product = products.find(p => p._id === productId);
+    if (!product) {
+      alert('Product not found');
+      return;
+    }
+
+    setSelectedProduct(product);
+    setShowAddToCartModal(true);
   }
 
   const handleMainAddToCart = async () => {
@@ -147,6 +148,11 @@ const RecipeDetail = () => {
       setAddingToCart(false);
     }
   }
+
+  const handleModalSuccess = (cartType, quantity) => {
+    // Optional: You can add additional logic here if needed
+    console.log(`Added ${quantity} items to ${cartType} cart`);
+  };
 
   const formatPrice = (price) => {
     return `Rp ${price.toLocaleString("id-ID")}`
@@ -253,6 +259,16 @@ const RecipeDetail = () => {
       >
         {addingToCart ? 'Adding Ingredients...' : `Add ${products.length} Ingredients to Cart`}
       </button>
+
+      {/* Add to Cart Modal */}
+      <CartModal
+        isOpen={showAddToCartModal}
+        onClose={() => setShowAddToCartModal(false)}
+        modalType="addToCart"
+        product={selectedProduct}
+        user={user}
+        onSuccess={handleModalSuccess}
+      />
     </div>
   )
 }

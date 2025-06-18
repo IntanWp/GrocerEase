@@ -1,0 +1,89 @@
+/* Collaboration Cart Specific Styles */
+
+/* Loading and Error States */
+.collab-cart-loading, 
+.collab-cart-error {
+  text-align: center;
+  padding: 50px;
+}
+
+/* Main Collaboration Section */
+.collab-cart-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 70px auto 0 auto;
+  padding: 0 30px;
+  box-sizing: border-box;
+  margin-bottom: -50px;
+}
+
+/* User Icons Container */
+.collab-cart-user-icons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.collab-cart-user-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #e9ecef;
+}
+
+.collab-cart-more-users {
+  font-size: 14px;
+  color: #6c757d;
+  margin-left: 8px;
+}
+
+/* Action Buttons Container */
+.collab-cart-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Base Button Styles */
+.collab-cart-btn {
+  padding: 10px 20px;
+  border: 2px solid gray;
+  border-radius: 8px;
+  background-color: transparent;
+  color: gray;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.collab-cart-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #6c757d;
+}
+
+/* End Cart Button - Red hover effect */
+.collab-cart-btn-end:hover {
+  background-color: #ffebee;
+  border-color: #f44336;
+  color: #f44336;
+}
+
+/* Empty Cart Message */
+.collab-cart-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  text-align: center;
+}
+
+.collab-cart-empty-text {
+  font-size: 1.2rem;
+  color: #555;
+}

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-import { productAPI, regularCartAPI } from "../services/api"
+import { productAPI } from "../services/api"
 import "./ProductDetail.css"
 import Header from "../components/Header"
 import Breadcrumbs from "../components/Breadcrumbs"
+import CartModal from "../components/CartModal"
 
 export default function ProductDetailPage() {
   const { id } = useParams()
@@ -12,11 +13,10 @@ export default function ProductDetailPage() {
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
   const [otherProducts, setOtherProducts] = useState([])
-  const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [addingToCart, setAddingToCart] = useState(false)
   const [checkingOut, setCheckingOut] = useState(false)
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -54,48 +54,36 @@ export default function ProductDetailPage() {
             name: p.name
           }))
         setOtherProducts(filtered)
-      }
-    } catch (error) {
+      }    } catch (error) {
       console.error('Error fetching product:', error)
       setError('Error loading product details')
     } finally {
       setLoading(false)
     }
   }
+  
   const breadcrumbItems = [
     { label: "Home", href: "/home" },
     { label: "Product Detail", current: true },
   ]
 
-  const handleQuantityChange = (type) => {
-    if (type === "increase") {
-      setQuantity((prev) => prev + 1)
-    } else if (type === "decrease" && quantity > 1) {
-      setQuantity((prev) => prev - 1)
-    }
-  }
-  
   const handleAddToCart = async () => {
-    try {
-      if (!user || !user.id) {
-        alert('Please login to add items to cart')
-        return
-      }
-
-      setAddingToCart(true)
-      const response = await regularCartAPI.addItemToRegularCart(user.id, product._id, quantity)
-      
-      if (response.success) {
-        alert(`Added ${quantity} ${product.name}(s) to cart successfully!`)
-      } else {
-        alert('Failed to add item to cart: ' + response.message)
-      }
-    } catch (error) {
-      console.error('Error adding to cart:', error)
-      alert('Failed to add item to cart')
-    } finally {
-      setAddingToCart(false)
+    if (!user || !user.id) {
+      alert('Please login to add items to cart')
+      return
     }
+
+    if (!product) {
+      alert('Product information is missing')
+      return
+    }
+
+    setShowAddToCartModal(true)
+  }
+
+  const handleModalSuccess = (cartType, quantity) => {
+    // Optional: You can add additional logic here if needed
+    console.log(`Added ${quantity} items to ${cartType} cart`)
   }
 
   const handleCheckout = async () => {
@@ -103,16 +91,14 @@ export default function ProductDetailPage() {
       if (!user || !user.id) {
         alert('Please login to checkout')
         return
-      }
-
-      setCheckingOut(true)
+      }      setCheckingOut(true)
       // Bypass cart - go directly to checkout with this item
       const checkoutItem = {
         id: product._id,
         name: product.name,
         price: product.price,
         img: product.image,
-        quantity: quantity
+        quantity: 1
       }
 
       navigate('/checkout', {
@@ -207,28 +193,10 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
               </div>
-            </div>           
-            {/* Purchase Section */}
+            </div>             {/* Purchase Section */}
             <div className="purchase-section">
-              <div className="quantity-section">
-                <label className="quantity-label">Quantity</label>
-                <div className="quantity-controls">
-                  <button
-                    className="quantity-btn"
-                    onClick={() => handleQuantityChange("decrease")}
-                    disabled={quantity <= 1}
-                  >
-                    −
-                  </button>
-                  <span className="quantity-display">{quantity}</span>
-                  <button className="quantity-btn" onClick={() => handleQuantityChange("increase")}>
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <button className="cart-button" onClick={handleAddToCart} disabled={addingToCart}>
-                {addingToCart ? 'Adding...' : 'Keranjang'}
+              <button className="cart-button" onClick={handleAddToCart}>
+                Keranjang
               </button>
               <button className="checkout-button" onClick={handleCheckout} disabled={checkingOut}>
                 {checkingOut ? 'Processing...' : 'Check Out'}
@@ -249,12 +217,18 @@ export default function ProductDetailPage() {
                 <div className="other-product-info">
                   <div className="other-product-price">Rp {product.price}</div>
                   <div className="other-product-name">{product.name}</div>
-                </div>
-              </div>
+                </div>              </div>
             ))}
           </div>
         </div>
-      </div>    
+      </div>      {/* Add to Cart Modal */}      <CartModal
+        isOpen={showAddToCartModal}
+        onClose={() => setShowAddToCartModal(false)}
+        modalType="addToCart"
+        product={product}
+        user={user}
+        onSuccess={handleModalSuccess}
+      />
     </div>
   )
 }

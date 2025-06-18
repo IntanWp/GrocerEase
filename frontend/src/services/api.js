@@ -274,12 +274,11 @@ export const monthlyCartAPI = {
 };
 
 // Collaborative Cart API calls
-export const collabCartAPI = {
-  createCart: async (settings = {}) => {
+export const collabCartAPI = {  createCart: async (userId, settings = {}) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/create`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ settings })
+      body: JSON.stringify({ userId, settings })
     });
   },
 
@@ -296,28 +295,25 @@ export const collabCartAPI = {
       body: JSON.stringify({ cartId, productId, quantity })
     });
   },
-
-  updateItemQuantity: async (cartId, productId, quantity) => {
+  updateItemQuantity: async (cartId, userId, productId, quantity) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/update-quantity`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ cartId, productId, quantity })
+      body: JSON.stringify({ cartId, userId, productId, quantity })
     });
   },
-
-  removeItemFromCart: async (cartId, productId) => {
+  removeItemFromCart: async (cartId, userId, productId) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/remove-item`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ cartId, productId })
+      body: JSON.stringify({ cartId, userId, productId })
     });
   },
-
-  generateInviteLink: async (cartId, invitedEmail) => {
+  generateInviteLink: async (cartId, userId, invitedEmail) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/invite`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ cartId, invitedEmail })
+      body: JSON.stringify({ cartId, userId, invitedEmail })
     });
   },
 
@@ -333,28 +329,26 @@ export const collabCartAPI = {
       headers: getAuthHeaders()
     });
   },
-
-  checkoutCart: async (cartId) => {
+  checkoutCart: async (cartId, userId) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/checkout`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ cartId })
+      body: JSON.stringify({ cartId, userId })
     });
   },
-
-  endCart: async (cartId) => {
+  endCart: async (cartId, userId) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/end`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ cartId })
+      body: JSON.stringify({ cartId, userId })
     });
   },
 
-  leaveCart: async (cartId) => {
+  leaveCart: async (cartId, userId) => {
     return apiRequest(`${API_BASE_URL}/collab-cart/leave`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ cartId })
+      body: JSON.stringify({ cartId, userId })
     });
   }
 };
