@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-    createCollaborativeCart,
+  createCollaborativeCart,
   getUserCollaborativeCart,
   generateInviteLink,
   joinCartViaInvite,

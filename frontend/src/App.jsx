@@ -15,6 +15,8 @@ import AccountPage from './pages/AccountPage';
 import EmptyMonthlyCart from './pages/EmptyMonthlyCart';
 import EmptyCollabCart from './pages/EmptyCollabCart';
 import CheckoutResponse from './pages/CheckoutResponse';
+import RecipeDetail from './pages/RecipeDetail';
+import ProductDetail from './pages/ProductDetail';
 
 function App() {
   return (
@@ -29,10 +31,11 @@ function App() {
           <Route path="/collaboration-cart" element={<ProtectedRoute><CollabCart /></ProtectedRoute>} />
           <Route path="/empty-cart" element={<ProtectedRoute><EmptyCart /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />          
           <Route path="/empty-monthly-cart" element={<ProtectedRoute><EmptyMonthlyCart /></ProtectedRoute>} />
-          <Route path="/empty-collab-cart" element={<ProtectedRoute><EmptyCollabCart /></ProtectedRoute>} />
-          <Route path="/checkout-response" element={<ProtectedRoute><CheckoutResponse /></ProtectedRoute>} />
+          <Route path="/empty-collab-cart" element={<ProtectedRoute><EmptyCollabCart /></ProtectedRoute>} />          <Route path="/checkout-response" element={<ProtectedRoute><CheckoutResponse /></ProtectedRoute>} />
+          <Route path="/recipe/:id" element={<ProtectedRoute><RecipeDetail /></ProtectedRoute>} />
+          <Route path="/product/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>

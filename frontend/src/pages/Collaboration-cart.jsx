@@ -1,25 +1,61 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { collabCartAPI } from '../services/api';
 import '../components/CartItem.css';
 import CartItem from '../components/CartItem';
-import riceImg from '../images/rice.jpg';
-import oysterImg from '../images/oyster.webp';
-import soySauceImg from '../images/soy_sauce.jpg';
-import sirloinImg from '../images/sirloin.jpg';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Header from '../components/Header';
 import Button from '../components/ButtonStyles';
 
-const App = () => {
+const CollaborationCart = () => {
+  const { user } = useAuth();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [cart, setCart] = useState(null);
 
-  const [items, setItems] = useState([
-    { id: 1, name: 'Rice 5 Kg', price: 25000, img: riceImg, quantity: 1 },
-    { id: 2, name: 'Oyster Sauce 500ml', price: 25000, img: oysterImg, quantity: 1 },
-    { id: 3, name: 'Sweet Soy Sauce 500ml', price: 25000, img: soySauceImg, quantity: 1 },
-    { id: 4, name: 'Pieces of Raw Sirloin', price: 25000, img: sirloinImg, quantity: 1 },
-  ]);
+  useEffect(() => {
+    if (user && user.id) {
+      fetchCartData();
+    }
+  }, [user]);
+
+  const fetchCartData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await collabCartAPI.getUserCart(user.id);
+      
+      if (response.success && response.cart) {
+        setCart(response.cart);
+        // Transform backend data to frontend format
+        const transformedItems = response.cart.items
+          .filter(item => item.product) // Only include items with valid products
+          .map(item => ({
+            id: item.productId,
+            name: item.product.name,
+            price: item.product.price,
+            img: item.product.image,
+            quantity: item.quantity
+          }));
+        
+        setItems(transformedItems);
+      } else {
+        // No collaborative cart found
+        setCart(null);
+        setItems([]);
+      }
+    } catch (error) {
+      console.error('Error fetching collaborative cart:', error);
+      setError('Error loading collaborative cart');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateQuantity = (id, type) => {
   const updatedItems = items.map(item => {
@@ -64,7 +100,7 @@ const App = () => {
       <Header />
 
       {/* Breadcrumb Navigation */}
-      <div className="profile-section">
+      <div className="profile">
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
@@ -78,7 +114,8 @@ const App = () => {
 
       {/* Main Content */}
       <div className="container">
-        <div className="select-all-section">
+        <div className="select-all-container">
+          <div className="select-all-box">
           <input
             type="checkbox"
             id="select-all"
@@ -86,6 +123,7 @@ const App = () => {
             onChange={handleSelectAll}
           />
           <label htmlFor="select-all">Select All</label>
+        </div>
         </div>
 
         {items.map(item => (
@@ -126,4 +164,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default CollaborationCart;

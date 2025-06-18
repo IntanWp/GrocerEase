@@ -103,9 +103,35 @@ const getUserCollaborativeCart = async (req, res) => {
       });
     }
 
+    // Populate product details for each cart item
+    const populatedItems = await Promise.all(
+      cart.items.map(async (item) => {
+        try {
+          const product = await productModel.findById(item.productId);
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            product: product || null // null if product not found
+          };
+        } catch (error) {
+          console.error(`Error fetching product ${item.productId}:`, error);
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            product: null
+          };
+        }
+      })
+    );
+
+    const populatedCart = {
+      ...cart.toObject(),
+      items: populatedItems
+    };
+
     res.json({
       success: true,
-      cart,
+      cart: populatedCart,
     });
   } catch (error) {
     console.log(error);

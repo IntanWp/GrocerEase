@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { regularCartAPI, userAPI } from '../services/api'
 import "./CheckOutPage.css"
 import Header from "../components/Header"
 import Breadcrumbs from "../components/Breadcrumbs"
@@ -11,27 +12,73 @@ export default function CheckoutPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const [checkoutItems, setCheckoutItems] = useState([])
+  const [userProfile, setUserProfile] = useState(null)
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // Get checkout items from location state or redirect to cart
-    if (location.state && location.state.items) {
-      setCheckoutItems(location.state.items)
-    } else {
-      navigate('/cart')
+  const [processing, setProcessing] = useState(false)
+    useEffect(() => {
+    const initializeCheckout = async () => {
+      // Get checkout items from location state or redirect to cart
+      if (location.state && location.state.selectedItems) {
+        setCheckoutItems(location.state.selectedItems)
+        
+        // Fetch user profile for shipping address
+        if (user && user.id) {
+          try {
+            const profileResponse = await userAPI.getProfile(user.id)
+            if (profileResponse.success) {
+              setUserProfile(profileResponse.user)
+            } else {
+              console.error('Failed to fetch user profile:', profileResponse.message)
+            }
+          } catch (error) {
+            console.error('Error fetching user profile:', error)
+          }
+        }
+      } else {
+        navigate('/cart')
+      }
+      setLoading(false)
     }
-    setLoading(false)
-  }, [location.state, navigate])
+    
+    initializeCheckout()
+  }, [location.state, navigate, user])
 
   const calculateTotal = () => {
     const itemsTotal = checkoutItems.reduce((total, item) => total + (item.price * item.quantity), 0)
     const shipping = 7000
     return { itemsTotal, shipping, total: itemsTotal + shipping }
   }
-
-  const handlePayment = () => {
-    // Simulate payment processing
-    navigate('/checkout-response')
+  const handlePayment = async () => {
+    if (processing) return;
+    
+    setProcessing(true);
+    
+    try {
+      // Get product IDs from checkout items
+      const productIds = checkoutItems.map(item => item.id);
+      
+      // Process checkout through backend
+      const response = await regularCartAPI.checkoutRegularCart(user.id, productIds);
+      
+      if (response.success) {
+        // Navigate to success page with order details
+        navigate('/checkout-response', {
+          state: {
+            success: true,
+            checkedOutItems: checkoutItems,
+            totalAmount: total,
+            orderDate: new Date().toISOString()
+          }
+        });
+      } else {
+        alert('Checkout failed: ' + response.message);
+        setProcessing(false);
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Checkout failed. Please try again.');
+      setProcessing(false);
+    }
   }
 
   const breadcrumbItems = [
@@ -57,24 +104,28 @@ export default function CheckoutPage() {
           <div className="section-header">
             <h3>Shipping Location</h3>
             <button className="change-btn">Change</button>
-          </div>
+          </div>          
           <div className="shipping-info">
             <div className="shipping-row">
               <span className="label">Home</span>
               <span className="separator">|</span>
-              <span className="name">User</span>
+              <span className="name">{userProfile ? `${userProfile.firstName} ${userProfile.lastName}` : 'User'}</span>
             </div>
+            {userProfile && userProfile.phoneNumber && (
+              <p className="phone">
+                +62 {userProfile.phoneNumber}
+              </p>
+            )}
             <p className="address">
-              Default shipping address will be displayed here
+              {userProfile ? userProfile.address : 'Default shipping address will be displayed here'}
             </p>
+            
           </div>
-        </section>
-
-        {/* Product Section */}
+        </section>        {/* Product Section */}
         <section className="checkout-section items">
           {checkoutItems.map((item, index) => (
             <div className="item" key={index}>
-              <img src={item.image || "/placeholder.svg"} alt={item.name} className="item-image" />
+              <img src={item.img || "/placeholder.svg"} alt={item.name} className="item-image" />
               <div className="item-details">
                 <h4>{item.name}</h4>
                 <p>{item.description || "Product description"}</p>
@@ -119,11 +170,13 @@ export default function CheckoutPage() {
             </div>
             <span className="card-number">*0XXX</span>
           </div>
-        </section>
-
-        {/* Pay Button */}
-        <button className="pay-btn" onClick={handlePayment}>
-          Pay Rp {total.toLocaleString('id-ID')}
+        </section>        {/* Pay Button */}
+        <button 
+          className="pay-btn" 
+          onClick={handlePayment}
+          disabled={processing}
+        >
+          {processing ? 'Processing...' : `Pay Rp ${total.toLocaleString('id-ID')}`}
         </button>
       </div>
     </div>

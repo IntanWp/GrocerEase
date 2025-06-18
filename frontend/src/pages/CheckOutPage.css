@@ -84,6 +84,13 @@
   color: #333;
 }
 
+.phone {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 5px;
+}
+
 .address {
   color: #666;
   font-size: 14px;

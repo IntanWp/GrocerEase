@@ -1,0 +1,373 @@
+* {
+  box-sizing: border-box;
+}
+
+.recipe-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.recipe-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  padding-top: 60px;
+}
+
+.recipe-content {
+  padding: 2rem 0;
+}
+
+/* Recipe Hero Section */
+.recipe-hero {
+  margin-bottom: 3rem;
+}
+
+.recipe-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.recipe-image {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.recipe-image img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.recipe-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Difficulty Tag Variants */
+.difficulty-tag {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  align-self: flex-start;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.difficulty-easy {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.difficulty-medium {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffeaa7;
+}
+
+.difficulty-hard {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.recipe-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2d5016;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.recipe-description {
+  color: #6c757d;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Recipe Details Section */
+.recipe-details {
+  margin-bottom: 3rem;
+}
+
+.recipe-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2d5016;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cooking-icon {
+  font-size: 1.25rem;
+}
+
+/* Ingredients */
+.ingredients-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ingredient-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+  line-height: 1.5;
+}
+
+.ingredient-item:last-child {
+  border-bottom: none;
+}
+
+/* Cooking Steps */
+.steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.step-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+}
+
+.step-number {
+  background-color: #4caf50;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.step-content {
+  color: #495057;
+  line-height: 1.6;
+  padding-top: 0.25rem;
+}
+
+/* Products Section */
+.recipe-products-section {
+  margin-bottom: 4rem;
+}
+
+.recipe-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.recipe-product-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recipe-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-product-image {
+  margin-bottom: 1rem;
+}
+
+.recipe-product-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.recipe-product-info {
+  margin-bottom: 1rem;
+}
+
+.recipe-product-price {
+  font-weight: bold;
+  color: #2d5016;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-product-name {
+  color: #6c757d;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.add-product-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.add-product-btn:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+.plus-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Sticky Cart Button */
+.sticky-cart-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.2s;
+  z-index: 1000;
+}
+
+.sticky-cart-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .recipe-products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .recipe-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .recipe-image img {
+    height: 250px;
+  }
+
+  .recipe-title {
+    font-size: 2rem;
+  }
+
+  .recipe-details-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .recipe-products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .sticky-cart-btn {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe-container {
+    padding: 0 0.5rem;
+  }
+
+  .recipe-content {
+    padding: 1rem 0;
+  }
+
+  .recipe-card {
+    padding: 1.5rem;
+    margin: 0 0.5rem;
+  }
+
+  .recipe-title {
+    font-size: 1.75rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .recipe-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .recipe-product-card {
+    padding: 0.75rem;
+  }
+
+  .recipe-product-image img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .sticky-cart-btn {
+    width: calc(100% - 2rem);
+    left: 1rem;
+    right: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 320px) {
+  .recipe-title {
+    font-size: 1.5rem;
+  }
+
+  .recipe-products-grid {
+    grid-template-columns: 1fr;
+  }
+}

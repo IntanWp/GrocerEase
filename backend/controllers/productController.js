@@ -45,56 +45,56 @@ const addProduct = async (req, res) => {
 
 //function for list product
 const listProducts = async (req, res) => {
-
-    try {
-        
-        const products = await productModel.find({});
-        res.json({ success: true, products });
-
-    } catch (error) {
-        console.log(error);
-        res.json({
-            success: false,
-            message: error.message,
-        });
+  try {
+    const { search } = req.query;
+    let query = {};
+    
+    // Add search functionality if search parameter provided
+    if (search && search.trim()) {
+      query.name = { $regex: search.trim(), $options: 'i' };
     }
+    
+    const products = await productModel.find(query);
+    res.json({ success: true, products });
 
+  } catch (error) {
+    console.log(error);
+    res.json({
+        success: false,
+        message: error.message,
+    });
+  }
 };
 
 //function for removing a product
 const removeProduct = async (req, res) => {
+  try {
+    await productModel.findByIdAndDelete(req.body.id);
+    res.json({ success: true, message: "Product removed successfully" });
 
-    try {
-        
-        await productModel.findByIdAndDelete(req.body.id);
-        res.json({ success: true, message: "Product removed successfully" });
-
-    } catch (error) {
-        console.log(error);
-        res.json({
-            success: false,
-            message: error.message,
-        });
-    }
-
+  } catch (error) {
+    console.log(error);
+    res.json({
+        success: false,
+        message: error.message,
+    });
+  }
 };
 
 //function for single product info
 const singleProduct = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const product = await productModel.findById(productId);
+    res.json({ success: true, product });
 
-    try {
-        
-        const { productId } = req.body;
-        const product = await productModel.findById(productId);
-        res.json({ success: true, product });
-
-    } catch (error) {
-        console.log(error);
-        res.json({
-            success: false,
-            message: error.message,
-        });
-    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+        success: false,
+        message: error.message,
+    });
+  }
 };
 
 export { addProduct, listProducts, removeProduct, singleProduct };

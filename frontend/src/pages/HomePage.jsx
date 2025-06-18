@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { productAPI, recipeAPI, regularCartAPI } from '../services/api';
 import Header from "../components/Header"
@@ -8,6 +9,7 @@ import bannerGraphic from "../images/banner-graphic.png"
 
 const HomePage = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,14 +27,12 @@ const HomePage = () => {
       const [productsResponse, recipesResponse] = await Promise.all([
         productAPI.getProducts(),
         recipeAPI.getRecipes()
-      ]);
-
-      if (productsResponse.success) {
-        setProducts(productsResponse.products.slice(0, 6));
+      ]);      if (productsResponse.success) {
+        setProducts(productsResponse.products.slice(0, 20));
       }
 
       if (recipesResponse.success) {
-        setRecipes(recipesResponse.data.slice(0, 6));
+        setRecipes(recipesResponse.data.slice(0, 12));
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -41,6 +41,9 @@ const HomePage = () => {
     }
   };
 
+  const handleRecipeClick = (recipeId) => {
+    navigate(`/recipe/${recipeId}`);
+  };
   const handleAddToCart = async (productId) => {
     try {
       if (!user || !user.id) {
@@ -59,6 +62,10 @@ const HomePage = () => {
       console.error('Error adding to cart:', error);
       alert('Failed to add item to cart');
     }
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
   };
 
   if (loading) {
@@ -87,9 +94,9 @@ const HomePage = () => {
         <div className="section">
           <h3>Recipe Recommendation</h3>
           <div className="slider-container">
-            <div className="card-container recipe-slider">
+            <div className="card-container home-recipe-slider">
               {recipes.map((recipe) => (
-                <div className="recipe-card" key={recipe._id}>
+                <div className="home-recipe-card" key={recipe._id} onClick={() => handleRecipeClick(recipe._id)}>
                   <div className="card-image">
                     <img src={recipe.image || "/placeholder.svg"} alt={recipe.title} />
                   </div>
@@ -104,18 +111,20 @@ const HomePage = () => {
 
         <div className="section">
           <h3>Product Recommendation</h3>
-          <div className="card-container">
-            {products.map((product) => (
-              <div className="product-card" key={product._id}>
-                <div className="card-image">
+          <div className="card-container">            {products.map((product) => (
+              <div className="home-product-card" key={product._id}>
+                <div className="card-image" onClick={() => handleProductClick(product._id)} style={{ cursor: 'pointer' }}>
                   <img src={product.image || "/placeholder.svg"} alt={product.name} />
                 </div>
                 <div className="card-content">
                   <p className="price">Rp {product.price.toLocaleString('id-ID')}</p>
-                  <p className="product-title">{product.name}</p>
+                  <p className="home-product-title" onClick={() => handleProductClick(product._id)} style={{ cursor: 'pointer' }}>{product.name}</p>
                   <button 
                     className="add-button"
-                    onClick={() => handleAddToCart(product._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToCart(product._id);
+                    }}
                   >
                     +
                   </button>

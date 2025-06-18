@@ -6,7 +6,10 @@ import productModel from '../models/productModel.js';
 const singleRecipe = async (req, res) => {
   try {
     const { recipeId } = req.body;
+    console.log('Fetching recipe with ID:', recipeId);
+    
     const recipe = await recipeModel.findById(recipeId);
+    console.log('Recipe found:', recipe ? 'YES' : 'NO');
 
     if (!recipe) {
       return res.status(404).json({
@@ -15,25 +18,25 @@ const singleRecipe = async (req, res) => {
       });
     }
 
-    // Find products for ingredients
+    console.log('Recipe ingredients count:', recipe.ingredients?.length || 0);// Find products for ingredients
     const ingredientsWithProducts = await Promise.all(
       recipe.ingredients.map(async (ingredient) => {
         let product = null;
         
         // Try to find product by ID first
         if (ingredient.productId) {
-          product = await ProductModel.findById(ingredient.productId);
+          product = await productModel.findById(ingredient.productId);
         }
         
-        // If no product found by ID, try to match by name
+        // If no product found by ID, try to match by productName
         if (!product && ingredient.productName) {
           product = await productModel.findOne({
             name: { $regex: ingredient.productName, $options: 'i' }
           });
         }
         
-        // If still no product, try to match by ingredient name
-        if (!product) {
+        // If still no product, try to match by ingredient name (with safety check)
+        if (!product && ingredient.name) {
           product = await productModel.findOne({
             name: { $regex: ingredient.name, $options: 'i' }
           });
@@ -50,10 +53,10 @@ const singleRecipe = async (req, res) => {
       success: true,
       data: {
         recipe,
-        ingredientsWithProducts
-      }
+        ingredientsWithProducts      }
     });
   } catch (error) {
+    console.error('Error in singleRecipe controller:', error);
     res.status(500).json({
       success: false,
       message: error.message
@@ -65,7 +68,15 @@ const singleRecipe = async (req, res) => {
 
 const listRecipes = async (req, res) => {
   try {
-    const recipes = await recipeModel.find();
+    const { search } = req.query;
+    let query = {};
+    
+    // Add search functionality if search parameter provided
+    if (search && search.trim()) {
+      query.title = { $regex: search.trim(), $options: 'i' };
+    }
+    
+    const recipes = await recipeModel.find(query);
     res.json({
       success: true,
       data: recipes

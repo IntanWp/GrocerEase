@@ -90,6 +90,12 @@ export const productAPI = {
     });
   },
 
+  searchProducts: async (query) => {
+    return apiRequest(`${API_BASE_URL}/product/list?search=${encodeURIComponent(query)}`, {
+      headers: getAuthHeaders()
+    });
+  },
+
   getProduct: async (productId) => {
     return apiRequest(`${API_BASE_URL}/product/single`, {
       method: 'POST',
@@ -107,12 +113,49 @@ export const recipeAPI = {
     });
   },
 
+  searchRecipes: async (query) => {
+    return apiRequest(`${API_BASE_URL}/recipe/list?search=${encodeURIComponent(query)}`, {
+      headers: getAuthHeaders()
+    });
+  },
+
   getRecipe: async (recipeId) => {
     return apiRequest(`${API_BASE_URL}/recipe/single`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify({ recipeId })
     });
+  }
+};
+
+// Search API calls
+export const searchAPI = {
+  searchProducts: async (query) => {
+    return apiRequest(`${API_BASE_URL}/product/list?search=${encodeURIComponent(query)}`, {
+      headers: getAuthHeaders()
+    });
+  },
+  
+  searchRecipes: async (query) => {
+    return apiRequest(`${API_BASE_URL}/recipe/list?search=${encodeURIComponent(query)}`, {
+      headers: getAuthHeaders()
+    });
+  },
+  
+  searchAll: async (query) => {
+    try {
+      const [products, recipes] = await Promise.all([
+        searchAPI.searchProducts(query),
+        searchAPI.searchRecipes(query)
+      ]);
+      return { products, recipes };
+    } catch (error) {
+      console.error('Search failed:', error);
+      return { 
+        products: { success: false, products: [] }, 
+        recipes: { success: false, data: [] } 
+      };
+    }
   }
 };
 

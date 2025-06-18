@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  
   const login = async (credentials) => {
     try {
       const response = await userAPI.login(credentials);

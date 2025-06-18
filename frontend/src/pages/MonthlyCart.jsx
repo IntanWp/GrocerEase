@@ -1,35 +1,83 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { monthlyCartAPI } from '../services/api';
 import '../components/CartItem.css';
 import CartItem from '../components/CartItem';
-import riceImg from '../images/rice.jpg';
-import oysterImg from '../images/oyster.webp';
-import soySauceImg from '../images/soy_sauce.jpg';
-import sirloinImg from '../images/sirloin.jpg';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Header from '../components/Header';
 
-const App = () => {
+const MonthlyCart = () => {
+  const { user } = useAuth();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [items, setItems] = useState([
-    { id: 1, name: 'Rice 5 Kg', price: 25000, img: riceImg, quantity: 1 },
-    { id: 2, name: 'Oyster Sauce 500ml', price: 25000, img: oysterImg, quantity: 1 },
-    { id: 3, name: 'Sweet Soy Sauce 500ml', price: 25000, img: soySauceImg, quantity: 1 },
-    { id: 4, name: 'Pieces of Raw Sirloin', price: 25000, img: sirloinImg, quantity: 1 },
-  ]);
-
-  const updateQuantity = (id, type) => {
-  const updatedItems = items.map(item => {
-    if (item.id === id) {
-      const newQty = type === 'increase' ? item.quantity + 1 : item.quantity - 1;
-      return { ...item, quantity: Math.max(1, newQty) }; // quantity minimal 1
+  useEffect(() => {
+    if (user && user.id) {
+      fetchCartData();
     }
-    return item;
-  });
-  setItems(updatedItems);
-};
+  }, [user]);
+
+  const fetchCartData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await monthlyCartAPI.getMonthlyCart(user.id);
+      
+      if (response.success) {
+        // Transform backend data to frontend format
+        const transformedItems = response.cart.items
+          .filter(item => item.product) // Only include items with valid products
+          .map(item => ({
+            id: item.productId,
+            name: item.product.name,
+            price: item.product.price,
+            img: item.product.image,
+            quantity: item.quantity
+          }));
+        
+        setItems(transformedItems);
+      } else {
+        setError('Failed to load monthly cart');
+      }
+    } catch (error) {
+      console.error('Error fetching monthly cart:', error);
+      setError('Error loading monthly cart');
+    } finally {
+      setLoading(false);
+    }
+  };
+  const updateQuantity = async (id, type) => {
+    try {
+      const item = items.find(item => item.id === id);
+      if (!item) return;
+
+      const newQty = type === 'increase' ? item.quantity + 1 : item.quantity - 1;
+      const finalQty = Math.max(1, newQty);
+
+      // Update backend
+      const response = await monthlyCartAPI.updateMonthlyCartQuantity(user.id, id, finalQty);
+      
+      if (response.success) {
+        // Update local state
+        const updatedItems = items.map(item => {
+          if (item.id === id) {
+            return { ...item, quantity: finalQty };
+          }
+          return item;
+        });
+        setItems(updatedItems);
+      } else {
+        console.error('Failed to update quantity:', response.message);
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  };
 
   const total = items
   .filter(item => selectedItems.includes(item.id))
@@ -63,7 +111,7 @@ const App = () => {
       <Header />
 
       {/* Breadcrumb Navigation */}
-      <div className="profile-section">
+      <div className="profile">
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
@@ -75,7 +123,8 @@ const App = () => {
 
       {/* Main Content */}
       <div className="container">
-        <div className="select-all-section">
+        <div className="select-all-container">
+          <div className="select-all-box">
           <input
             type="checkbox"
             id="select-all"
@@ -83,6 +132,7 @@ const App = () => {
             onChange={handleSelectAll}
           />
           <label htmlFor="select-all">Select All</label>
+        </div>
         </div>
 
         {items.map(item => (
@@ -123,4 +173,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default MonthlyCart;

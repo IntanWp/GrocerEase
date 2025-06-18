@@ -53,20 +53,20 @@ function LoginPage() {
 
   return (
     <div>
-      <div className="logo">
-        <img src={logo} alt="logo" />
-      </div>
-
-      <div className="container">
+      <div className="login-container">
         <div className="tagline-container">
+          <div className="login-logo">
+            <img src={logo} alt="logo" />
+          </div>
           <h1 className="tagline">Organic & Healthy <br /> Products</h1>
           <p className="desc">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua.
+            Access your personalized grocery lists, add ingredients from your 
+            favorite recipes directly to your cart, track your orders in real-time, 
+            and discover high quality deals tailored just for you.
           </p>
 
           {error && <div className="error-message">{error}</div>}
-          <form onSubmit={handleSubmit}>
+          <form className='login-form' onSubmit={handleSubmit}>
             <div className="input-container">
               <img src={userIcon} alt="User Icon" className="input-icon" />
               <input 

@@ -17,31 +17,29 @@ body {
   position: relative;
 }
 
-.logo {
-  position: absolute;
+.login-logo {
+  padding-bottom: 15px;
   top: 2rem;
   left: 2rem;
   z-index: 10;
 }
 
-.logo img {
+.login-logo img {
   height: 40px;
   width: auto;
 }
 
-.container {
+.login-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  padding: 0 4rem;
-  gap: 4rem;
+  padding: 0 8rem;
 }
 
 .tagline-container {
   flex: 1;
-  max-width: 500px;
-  padding-top: 4rem; /* Changed from 6rem to 4rem */
+  max-width: 550px;
 }
 
 .tagline {
@@ -63,7 +61,7 @@ body {
 .belanjaan-container {
   flex: 1;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
@@ -164,7 +162,11 @@ form {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .container {
+  .login-logo img {
+    padding-left: 35px;
+  }
+
+  .login-container {
     flex-direction: column;
     padding: 2rem;
     text-align: center;
@@ -172,6 +174,11 @@ form {
 
   .tagline {
     font-size: 2rem;
+  }
+
+  .login-form {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .form-buttons {
