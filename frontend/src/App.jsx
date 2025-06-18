@@ -17,6 +17,7 @@ import EmptyCollabCart from './pages/EmptyCollabCart';
 import CheckoutResponse from './pages/CheckoutResponse';
 import RecipeDetail from './pages/RecipeDetail';
 import ProductDetail from './pages/ProductDetail';
+import SearchResults from './pages/SearchResults';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/empty-collab-cart" element={<ProtectedRoute><EmptyCollabCart /></ProtectedRoute>} />          <Route path="/checkout-response" element={<ProtectedRoute><CheckoutResponse /></ProtectedRoute>} />
           <Route path="/recipe/:id" element={<ProtectedRoute><RecipeDetail /></ProtectedRoute>} />
           <Route path="/product/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
+          <Route path="/search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>
