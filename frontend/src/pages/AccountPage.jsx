@@ -1,4 +1,3 @@
-"use client"
 import React, { useState, useEffect } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { userAPI } from "../services/api"
@@ -31,10 +30,8 @@ export default function AccountPage() {
   const fetchUserProfile = async () => {
     try {
       setLoading(true)
-      console.log('Fetching profile for user ID:', user.id) // Debug log
       
       const response = await userAPI.getProfile(user.id)
-      console.log('Profile response:', response) // Debug log
       
       if (response.success && response.user) {
         setUserProfile({

@@ -1,4 +1,3 @@
-"use client"
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -30,9 +29,7 @@ const RecipeDetail = () => {
       setLoading(true);
       setError(null);
       
-      console.log('Fetching recipe with ID:', id);
       const response = await recipeAPI.getRecipe(id);
-      console.log('API Response:', response);
       
       if (response.success) {
         setRecipe(response.data.recipe);
@@ -108,11 +105,6 @@ const RecipeDetail = () => {
 
       setAddingToCart(true);
 
-      console.log('====== RECIPE ADD TO CART ======');
-      console.log('Recipe:', recipe.title);
-      console.log('Available Products:', products.length);
-      console.log('================================');
-
       // Add all available products to cart
       const addPromises = products.map(async (product) => {
         try {
@@ -130,11 +122,6 @@ const RecipeDetail = () => {
       const successful = results.filter(r => r.success).length;
       const failed = results.filter(r => !r.success).length;
 
-      console.log('====== RECIPE ADD RESULTS ======');
-      console.log('Successful:', successful);
-      console.log('Failed:', failed);
-      console.log('================================');
-
       if (successful > 0) {
         alert(`Successfully added ${successful} ingredient${successful > 1 ? 's' : ''} to cart!${failed > 0 ? ` (${failed} items failed)` : ''}`);
       } else {
@@ -150,7 +137,6 @@ const RecipeDetail = () => {
   }
 
   const handleModalSuccess = (cartType, quantity) => {
-    // Optional: You can add additional logic here if needed
     console.log(`Added ${quantity} items to ${cartType} cart`);
   };
 

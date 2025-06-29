@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await userAPI.login(credentials);
-      console.log('Login response:', response);
       
       if (response.success && response.token) {
         localStorage.setItem('token', response.token);
@@ -103,7 +102,6 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await userAPI.register(userData);
-      console.log('Register response:', response);
       
       if (response.success && response.token) {
         localStorage.setItem('token', response.token);

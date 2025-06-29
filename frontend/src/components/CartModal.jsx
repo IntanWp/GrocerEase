@@ -57,14 +57,14 @@ const CartModal = ({
           response = await monthlyCartAPI.addItemToMonthlyCart(user.id, product._id, quantity);
           break;
         case 'collaboration':
-          // First, try to get user's existing collaboration cart
+          // get user's existing collaboration cart
           const userCartResponse = await collabCartAPI.getUserCart(user.id);
           
           if (userCartResponse.success && userCartResponse.cart) {
             // User has an existing collaboration cart
             response = await collabCartAPI.addItemToCart(userCartResponse.cart.cartId, product._id, quantity);
           } else {
-            // User doesn't have a collaboration cart, create one first
+            // User doesn't have a collaboration cart
             const createCartResponse = await collabCartAPI.createCart(user.id, {
               allowMembersToInvite: false,
               allowMembersToRemoveItems: true,

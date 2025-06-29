@@ -29,7 +29,6 @@ export default function ProductDetailPage() {
       setLoading(true)
       setError(null)
       
-      console.log('Fetching product with ID:', id)
       const [productResponse, allProductsResponse] = await Promise.all([
         productAPI.getProduct(id),
         productAPI.getProducts()
@@ -82,7 +81,6 @@ export default function ProductDetailPage() {
   }
 
   const handleModalSuccess = (cartType, quantity) => {
-    // Optional: You can add additional logic here if needed
     console.log(`Added ${quantity} items to ${cartType} cart`)
   }
 

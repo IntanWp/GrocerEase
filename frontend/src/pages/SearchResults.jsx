@@ -122,7 +122,6 @@ const SearchResults = () => {
   };
 
   const handleModalSuccess = (cartType, quantity) => {
-    // Optional: You can add additional logic here if needed
     console.log(`Added ${quantity} items to ${cartType} cart`);
   };
 
