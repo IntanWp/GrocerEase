@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-    createCollaborativeCart,
+  createCollaborativeCart,
   getUserCollaborativeCart,
   generateInviteLink,
   joinCartViaInvite,
@@ -25,11 +25,11 @@ collabCartRouter.get('/user/:userId', authMiddleware, getUserCollaborativeCart);
 // Generate invite link
 collabCartRouter.post('/invite', authMiddleware, generateInviteLink);
 
-// Join cart via invite link (when clicking the link)
-collabCartRouter.get('/join/:inviteToken', authMiddleware, joinCartViaInvite);
-
 // Get invite details (public route for invite page)
 collabCartRouter.get('/invite/:inviteToken', getInviteDetails);
+
+// Join cart via invite link (when clicking the link)
+collabCartRouter.post('/join/:inviteToken', authMiddleware, joinCartViaInvite);
 
 // Add item to cart
 collabCartRouter.post('/add-item', authMiddleware, addItemToCart);

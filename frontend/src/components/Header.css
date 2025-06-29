@@ -31,17 +31,22 @@
   text-decoration: none;
 }
 
-.logo {
+.header-logo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
   margin-top: -13px;
   width: 160px;
-  height: auto;
-  display: block;
+  /* height: auto;
+  display: block; */
 }
 
 .search-container {
   flex: 1;
   max-width: 600px;
   margin: 0 60px;
+  position: relative;
 }
 
 .search-bar {
@@ -54,9 +59,6 @@
   outline: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: "Poppins", sans-serif;
-  flex: 1;
-  max-width: 600px;
-  margin: 0 60px;
 }
 
 .search-bar::placeholder {
@@ -69,28 +71,184 @@
   outline: none;
 }
 
-.header-icons {
+/* Search Dropdown Styles */
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+/* Custom Scrollbar for Search Dropdown */
+.search-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.search-loading {
+  padding: 16px 20px;
+  text-align: center;
+  color: #666;
+  font-family: "Poppins", sans-serif;
+}
+
+.search-section {
+  padding: 12px 0;
+}
+
+.search-section:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-section-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: #2d5016;
+  padding: 8px 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.search-item {
   display: flex;
   align-items: center;
-  gap: 32px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-item:hover {
+  background-color: #f8f9fa;
+}
+
+.search-item-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-right: 12px;
   flex-shrink: 0;
 }
 
-.icon-link {
+.search-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-item-name {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-item-price {
+  font-size: 12px;
+  color: #a3db7e;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  margin-top: 2px;
+}
+
+.search-no-results {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+}
+
+.header-icons {
   display: flex;
   align-items: center;
-  text-decoration: none;
+  gap: 15px;
+  min-width: 200px;
+  justify-content: flex-end;
+}
+
+.icon-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.icon-link:hover {
+  transform: scale(1.05);
 }
 
 .icon {
   width: 28px;
   height: 28px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  display: block;
 }
 
-.icon:hover {
-  transform: scale(1.1);
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Poppins", sans-serif;
+  color: #2d4a22;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background-color: #347928;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #1e3217;
+}
+
+/* Highlighted search bar when dropdown is active */
+.search-bar.dropdown-active {
+  box-shadow: 0 4px 12px rgba(163, 219, 126, 0.3);
+  border: 2px solid white;
+  padding: 10px 18px;
+  position: relative;
+  z-index: 1001;
+  background-color: white; 
 }
 
 /* Responsive Design */
@@ -98,14 +256,16 @@
   .header {
     padding: 10px 16px;
   }
-
   .logo {
     width: 120px;
   }
 
-  .search-bar {
+  .search-container {
     margin: 0 20px;
     max-width: none;
+  }
+
+  .search-bar {
     padding: 10px 16px;
     font-size: 14px;
   }
@@ -129,8 +289,11 @@
     width: 100px;
   }
 
-  .search-bar {
+  .search-container {
     margin: 0 12px;
+  }
+
+  .search-bar {
     padding: 8px 12px;
     font-size: 13px;
   }

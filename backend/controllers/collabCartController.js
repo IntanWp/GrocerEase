@@ -103,9 +103,35 @@ const getUserCollaborativeCart = async (req, res) => {
       });
     }
 
+    // Populate product details for each cart item
+    const populatedItems = await Promise.all(
+      cart.items.map(async (item) => {
+        try {
+          const product = await productModel.findById(item.productId);
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            product: product || null // null if product not found
+          };
+        } catch (error) {
+          console.error(`Error fetching product ${item.productId}:`, error);
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            product: null
+          };
+        }
+      })
+    );
+
+    const populatedCart = {
+      ...cart.toObject(),
+      items: populatedItems
+    };
+
     res.json({
       success: true,
-      cart,
+      cart: populatedCart,
     });
   } catch (error) {
     console.log(error);
@@ -270,8 +296,23 @@ const joinCartViaInvite = async (req, res) => {
 
 // Add item to collaborative cart
 const addItemToCart = async (req, res) => {
-  try {
-    const { cartId, userId, productId, quantity = 1 } = req.body;
+  try {    const { cartId, userId, productId, quantity = 1 } = req.body;
+
+    // Validate product and stock availability
+    const product = await productModel.findById(productId);
+    if (!product) {
+      return res.json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    if (product.stock < quantity) {
+      return res.json({
+        success: false,
+        message: `Insufficient stock. Only ${product.stock} items available.`,
+      });
+    }
 
     const cart = await collaborativeCartModel.findOne({
       cartId,
@@ -295,15 +336,21 @@ const addItemToCart = async (req, res) => {
     // Check if item already exists in cart
     const existingItemIndex = cart.items.findIndex(
       (item) => item.productId === productId
-    );
-
-    if (existingItemIndex > -1) {
+    );    if (existingItemIndex > -1) {
       // Update quantity
-
       const currentQuantity = Number(cart.items[existingItemIndex].quantity) || 0;
       const addQuantity = Number(quantity) || 0;
-      cart.items[existingItemIndex].quantity = currentQuantity + addQuantity;
-
+      const newQuantity = currentQuantity + addQuantity;
+      
+      // Check if new total quantity exceeds stock
+      if (newQuantity > product.stock) {
+        return res.json({
+          success: false,
+          message: `Cannot add ${addQuantity} more items. Only ${product.stock - currentQuantity} more can be added (current: ${currentQuantity}, stock: ${product.stock}).`,
+        });
+      }
+      
+      cart.items[existingItemIndex].quantity = newQuantity;
     } else {
       // Add new item
       cart.items.push({
@@ -361,9 +408,25 @@ const updateItemQuantity = async (req, res) => {
         success: false,
         message: "Item not found in cart",
       });
-    }
+    }    const newQuantity = Number(quantity) || 0;
 
-    const newQuantity = Number(quantity) || 0;
+    // Validate stock if quantity is being increased
+    if (newQuantity > 0) {
+      const product = await productModel.findById(productId);
+      if (!product) {
+        return res.json({
+          success: false,
+          message: "Product not found",
+        });
+      }
+      
+      if (newQuantity > product.stock) {
+        return res.json({
+          success: false,
+          message: `Insufficient stock. Only ${product.stock} items available.`,
+        });
+      }
+    }
 
     if (newQuantity <= 0) {
       // Remove item if quantity is 0 or negative
@@ -459,15 +522,39 @@ const checkoutCollaborativeCart = async (req, res) => {
         success: false,
         message: "Only cart admin can checkout",
       });
-    }
-
-    if (cart.items.length === 0) {
+    }    if (cart.items.length === 0) {
       return res.json({
         success: false,
         message: "Cannot checkout empty cart",
       });
     }
 
+    // Validate stock availability for all items before processing
+    for (const item of cart.items) {
+      const product = await productModel.findById(item.productId);
+      if (!product) {
+        return res.json({
+          success: false,
+          message: `Product not found: ${item.productId}`,
+        });
+      }
+      
+      if (product.stock < item.quantity) {
+        return res.json({
+          success: false,
+          message: `Insufficient stock for ${product.name}. Only ${product.stock} items available, but ${item.quantity} requested.`,
+        });
+      }
+    }
+
+    // Update stock for all checked out items
+    for (const item of cart.items) {
+      const product = await productModel.findById(item.productId);
+      product.stock -= item.quantity;
+      await product.save();
+    }
+
+    // Delete the collaborative cart after successful checkout
     await collaborativeCartModel.findOneAndDelete({ cartId });
 
     res.json({

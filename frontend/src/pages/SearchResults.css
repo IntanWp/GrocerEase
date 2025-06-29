@@ -1,0 +1,309 @@
+/* Search Results Page Styles */
+.search-page-wrapper {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.search-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 40px 40px 40px;
+}
+
+.search-page-loading {
+  text-align: center;
+  padding: 50px;
+  margin-top: 60px;
+  font-family: "Poppins", sans-serif;
+  color: #666;
+}
+
+/* Query Display */
+.search-page-query-display {
+  margin-bottom: 20px;
+}
+
+.search-page-query-display h1 {
+  color: #2d5016;
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+}
+
+/* No Results State */
+.search-page-no-results {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.search-page-no-results h2 {
+  color: #2d5016;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-family: "Poppins", sans-serif;
+}
+
+.search-page-no-results p {
+  color: #666;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Section Styles */
+.search-page-section {
+  margin-bottom: 40px;
+}
+
+.search-page-section-header {
+  margin-bottom: 20px;
+}
+
+.search-page-section-header h2 {
+  color: #2d5016;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-family: "Poppins", sans-serif;
+}
+
+.search-page-result-count {
+  color: #666;
+  font-size: 0.9rem;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+}
+
+/* Recipe Grid */
+.search-page-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.search-page-recipe-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-page-recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  position: relative;
+}
+
+/* Product Grid */
+.search-page-product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.search-page-product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-page-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  position: relative;
+}
+
+/* Card Image Styles */
+.search-page-recipe-card-image {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.search-page-recipe-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-page-card-image {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.search-page-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Card Content */
+.search-page-card-content {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Recipe Card Content */
+.search-page-recipe-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+/* Product Card Content */
+.search-page-product-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d5016;
+  margin-bottom: 8px;
+  font-family: "Poppins", sans-serif;
+}
+
+.search-page-product-title {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #666;
+  line-height: 1.4;
+  font-family: "Poppins", sans-serif;
+  word-wrap: break-word;
+  flex: 1;
+}
+
+/* Add to Cart Button */
+.search-page-add-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.search-page-add-button:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+/* Update product card content to support absolute positioning */
+.search-page-product-card .search-page-card-content {
+  position: relative;
+}
+
+/* View More Button */
+.search-page-view-more-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.search-page-view-more-btn {
+  background-color: #a3db7e;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-page-view-more-btn:hover {
+  background-color: #7bc142;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .search-page-recipe-grid,
+  .search-page-product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .search-page-container {
+    padding: 20px 20px 40px;
+  }
+
+  .search-page-recipe-grid,
+  .search-page-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .search-page-recipe-card,
+  .search-page-product-card {
+    height: 220px;
+  }
+
+  .search-page-card-image {
+    height: 130px;
+  }
+
+  .search-page-query-display h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-page-recipe-grid,
+  .search-page-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .search-page-recipe-card,
+  .search-page-product-card {
+    height: 200px;
+  }
+
+  .search-page-card-image {
+    height: 120px;
+  }
+
+  .search-page-card-content {
+    padding: 12px;
+  }
+}

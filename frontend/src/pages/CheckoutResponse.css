@@ -52,6 +52,8 @@
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s ease-out 0.2s, opacity 0.3s ease;
+  position: relative;
+  z-index: 10;
 }
 
 .back-button.visible {
@@ -73,6 +75,8 @@
   height: auto;
   opacity: 0;
   transition: all 0.8s ease-out 0.4s;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .happy-person-image.visible {

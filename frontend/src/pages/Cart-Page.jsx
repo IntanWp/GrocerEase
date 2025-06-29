@@ -1,40 +1,105 @@
-// src/App.jsx
-import React, { useState } from 'react';
+// src/pages/CartPage.jsx
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { regularCartAPI } from '../services/api';
 import '../components/CartItem.css';
 import CartItem from '../components/CartItem';
-import riceImg from '../images/rice.jpg';
-import oysterImg from '../images/oyster.webp';
-import soySauceImg from '../images/soy_sauce.jpg';
-import sirloinImg from '../images/sirloin.jpg';
-
 import Breadcrumbs from '../components/Breadcrumbs';
 import Header from '../components/Header.jsx';
 
-const App = () => {
+const CartPage = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [items, setItems] = useState([
-    { id: 1, name: 'Rice 5 Kg', price: 25000, img: riceImg, quantity: 1 },
-    { id: 2, name: 'Oyster Sauce 500ml', price: 25000, img: oysterImg, quantity: 1 },
-    { id: 3, name: 'Sweet Soy Sauce 500ml', price: 25000, img: soySauceImg, quantity: 1 },
-    { id: 4, name: 'Pieces of Raw Sirloin', price: 25000, img: sirloinImg, quantity: 1 },
-  ]);
-
-  const updateQuantity = (id, type) => {
-  const updatedItems = items.map(item => {
-    if (item.id === id) {
-      const newQty = type === 'increase' ? item.quantity + 1 : item.quantity - 1;
-      return { ...item, quantity: Math.max(1, newQty) }; // quantity minimal 1
+  useEffect(() => {
+    if (user && user.id) {
+      fetchCartData();
     }
-    return item;
-  });
-  setItems(updatedItems);
-};
+  }, [user]);
 
-  const total = items
-  .filter(item => selectedItems.includes(item.id))
-  .reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const fetchCartData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await regularCartAPI.getRegularCart(user.id);
+      
+      if (response.success) {
+        // Transform backend data to frontend format
+        const transformedItems = response.cart.items
+          .filter(item => item.product) // Only include items with valid products
+          .map(item => ({
+            id: item.productId,
+            name: item.product.name,
+            price: item.product.price,
+            img: item.product.image,
+            quantity: item.quantity
+          }));
+        
+        setItems(transformedItems);
+      } else {
+        setError('Failed to load cart');
+      }
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+      setError('Error loading cart');
+    } finally {
+      setLoading(false);
+    }
+  };
+  const updateQuantity = async (id, type) => {
+    try {
+      const item = items.find(item => item.id === id);
+      if (!item) return;
+
+      const newQty = type === 'increase' ? item.quantity + 1 : item.quantity - 1;
+      const finalQty = Math.max(1, newQty);
+
+      // Update backend
+      const response = await regularCartAPI.updateRegularCartQuantity(user.id, id, finalQty);
+      
+      if (response.success) {
+        // Update local state
+        const updatedItems = items.map(item => {
+          if (item.id === id) {
+            return { ...item, quantity: finalQty };
+          }
+          return item;
+        });
+        setItems(updatedItems);
+      } else {
+        console.error('Failed to update quantity:', response.message);
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  };
+
+  const handleRemoveItem = async (id) => {
+    try {
+      // Remove from backend
+      const response = await regularCartAPI.removeFromRegularCart(user.id, id);
+      
+      if (response.success) {
+        // Update local state
+        const updatedItems = items.filter(item => item.id !== id);
+        setItems(updatedItems);
+        const updatedSelected = selectedItems.filter(selectedId => selectedId !== id);
+        setSelectedItems(updatedSelected);
+        setSelectAll(updatedSelected.length === updatedItems.length);
+      } else {
+        console.error('Failed to remove item:', response.message);
+      }
+    } catch (error) {
+      console.error('Error removing item:', error);
+    }
+  };
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -49,22 +114,64 @@ const App = () => {
 
   const handleToggleItem = (itemId) => {
     const isChecked = selectedItems.includes(itemId);
-    const newSelectedItems = isChecked 
-      ? selectedItems.filter(id => id !== itemId) 
+    const newSelectedItems = isChecked
+      ? selectedItems.filter(id => id !== itemId)
       : [...selectedItems, itemId];
 
     setSelectedItems(newSelectedItems);
     setSelectAll(newSelectedItems.length === items.length);
   };
+  const total = items
+    .filter(item => selectedItems.includes(item.id))
+    .reduce((sum, item) => sum + item.price * item.quantity, 0);  const goToMonthly = () => navigate('/monthly-cart');
+  const goToCollab = () => navigate('/collaboration-cart');
 
-  const totalPrice = selectedItems.length * 25000; // Assuming each item is 25000
+  const handleCheckout = () => {
+    if (selectedItems.length === 0) {
+      alert('Please select items to checkout');
+      return;
+    }
+
+    // Get selected items with full details
+    const selectedItemsData = items.filter(item => selectedItems.includes(item.id));
+    
+    // Navigate to checkout page with selected items
+    navigate('/checkout', { 
+      state: { 
+        selectedItems: selectedItemsData,
+        totalAmount: total 
+      } 
+    });
+  };
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="container" style={{ textAlign: 'center', padding: '50px' }}>
+          <p>Loading cart...</p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="container" style={{ textAlign: 'center', padding: '50px' }}>
+          <p>Error: {error}</p>
+          <button onClick={fetchCartData}>Retry</button>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
 
-      {/* Breadcrumb Navigation */}
-      <div className="profile-section">
+      <div className="profile">
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
@@ -72,55 +179,65 @@ const App = () => {
           ]}
         />
       </div>
-
-      {/* Main Content */}
+      
       <div className="container">
         <div className="select-all-container">
           <div className="select-all-box">
             <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
             <label htmlFor="select-all">Select All</label>
           </div>
-          <button className="green-button">Monthly Cart</button>
-          <button className="green-button">Collaboration Cart</button>
-        </div>
-
-
-        {items.map(item => (
+          <button className="green-button" onClick={goToMonthly}>Monthly Cart</button>
+          <button className="green-button" onClick={goToCollab}>Collaboration Cart</button>
+        </div>        {items.map(item => (
           <CartItem
             key={item.id}
             {...item}
             isSelected={selectedItems.includes(item.id)}
-            onToggle={() => {
-              const isChecked = selectedItems.includes(item.id);
-              if (isChecked) {
-                setSelectedItems(selectedItems.filter(id => id !== item.id));
-                setSelectAll(false);
-              } else {
-                const newSelected = [...selectedItems, item.id];
-                setSelectedItems(newSelected);
-                if (newSelected.length === items.length) {
-                  setSelectAll(true);
-                }
-              }
-            }}
+            onToggle={() => handleToggleItem(item.id)}
             onIncrease={() => updateQuantity(item.id, 'increase')}
             onDecrease={() => updateQuantity(item.id, 'decrease')}
+            onRemove={() => handleRemoveItem(item.id)}
           />
         ))}
 
-        {/* Checkout Footer */}
-        <div className="checkout-footer">
-          <div className="total-shape">
-            <div className="total">
-              <span>Total Price</span>
-              <span1>Rp {total.toLocaleString('id-ID')},00</span1>
-            </div>
+        {/* Empty cart message when no items */}
+        {items.length === 0 && (
+          <div 
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '200px',
+              textAlign: 'center'
+            }}
+          >
+            <p style={{ fontSize: '1.2rem', color: '#555' }}>
+              Your shopping cart is empty. Start adding items!
+            </p>
           </div>
-          <button className="checkout-button">Check Out</button>
-        </div>
+        )}
+
+        {/* Checkout Footer - only show when there are items */}
+        {items.length > 0 && (
+          <div className="checkout-footer">
+            <div className="total-shape">
+              <div className="total">
+                <span>Total Price</span>
+                <span className="total-value">Rp {total.toLocaleString('id-ID')},00</span>
+              </div>
+            </div>
+            <button 
+              className="checkout-button" 
+              disabled={selectedItems.length === 0}
+              onClick={handleCheckout}
+            >
+              Check Out
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
 };
 
-export default App;
+export default CartPage;
