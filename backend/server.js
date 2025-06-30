@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://grocer-ease-frontend-theta.vercel.app',
+    'https://grocer-ease-frontend-six.vercel.app/',
     'https://*.vercel.app'
   ],
   credentials: true
