@@ -15,6 +15,7 @@ import CheckoutResponse from './pages/CheckoutResponse';
 import RecipeDetail from './pages/RecipeDetail';
 import ProductDetail from './pages/ProductDetail';
 import SearchResults from './pages/SearchResults';
+import InvitePage from './pages/InvitePage';
 
 function App() {
   return (
@@ -28,10 +29,12 @@ function App() {
           <Route path="/monthly-cart" element={<ProtectedRoute><MonthlyCart /></ProtectedRoute>} />
           <Route path="/collaboration-cart" element={<ProtectedRoute><CollabCart /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />                   <Route path="/checkout-response" element={<ProtectedRoute><CheckoutResponse /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />                   
+          <Route path="/checkout-response" element={<ProtectedRoute><CheckoutResponse /></ProtectedRoute>} />
           <Route path="/recipe/:id" element={<ProtectedRoute><RecipeDetail /></ProtectedRoute>} />
           <Route path="/product/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
           <Route path="/search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
+          <Route path="/collab-invite/:token" element={<ProtectedRoute><InvitePage /></ProtectedRoute>} />
         </Routes>
       </Router>
     </AuthProvider>
