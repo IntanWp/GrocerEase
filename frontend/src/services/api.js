@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://grocerease-backend.vercel.app';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000/api';
 
 // Utility to get auth headers with token
 const getAuthHeaders = () => {
