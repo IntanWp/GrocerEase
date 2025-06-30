@@ -41,7 +41,7 @@ export default function AccountPage() {
           lastName: response.user.lastName || "",
           address: response.user.address || "",
           phoneNumber: response.user.phoneNumber || "",
-          profileImage: response.user.profileImage || "/placeholder.svg?height=300&width=300",
+          // profileImage: response.user.profileImage || "/placeholder.svg?height=300&width=300",
         })
       } else {
         console.error('Failed to fetch profile:', response.message)
@@ -116,17 +116,6 @@ export default function AccountPage() {
 
       <div className="account-container">
         <div className="profile-section">
-          <div className="profile-left">
-            <h2 className="profile-name">{`${userProfile.firstName} ${userProfile.lastName}`.trim() || userProfile.username || 'User'}</h2>
-            <div className="profile-image-container">
-              <img
-                src={userProfile.profileImage}
-                alt="Profile"
-                className="profile-image"
-              />
-              <button className="change-photo-btn">Change Photo</button>
-            </div>
-          </div>
 
           <div className="profile-form">
             <div className="form-group">
