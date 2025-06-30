@@ -16,10 +16,16 @@ const port = process.env.PORT || 4000;
 connectDB()
 connectCloudinary();
 
-
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://grocer-ease-frontend-theta.vercel.app',
+    'https://*.vercel.app'
+  ],
+  credentials: true
+}));
 
 // API end points
 app.use('/api/user', userRouter);
