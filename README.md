@@ -4,6 +4,8 @@ A grocery shopping application simulation that helps users manage their shopping
 
 This is part of a software engineering course project where we learn and develop an application as a team. We learn and applied the core principles in software development from using tools for project management to using version control system like git to keep track of changes and work on the project as a team.
 
+This app can be accessed through this link: https://grocer-ease-frontend-six.vercel.app/
+
 ## 📋 Prerequisites
 
 Before running this application, make sure you have:
